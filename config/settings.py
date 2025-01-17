@@ -28,9 +28,10 @@ SECRET_KEY = config('SECRET_KEY', default=None)
 if not SECRET_KEY:
     raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+    DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['15.164.218.141']
+DEBUG = False
 
 
 # Application definition
@@ -61,6 +62,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
 
     'social_django',
+
+    'storages',
 
 ]
 
@@ -168,6 +171,17 @@ SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')  # 직접 키를 입력하지 않음
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = 'ap-northeast-2'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERIFY = True
+
+# S3를 기본 저장소로 설정
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # 캐시 설정
 CACHES = {
@@ -244,6 +258,10 @@ if DEBUG:
 else:
     # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_DIRS = []  # 프로덕션에서는 STATICFILES_DIRS 비활성화
+
+# 정적/미디어 파일 URL 설정
+STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/'
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
 
 # 공통 설정
 STATIC_URL = '/static/'
