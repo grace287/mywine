@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="notes-by-date">
+    <h2>{{ target_date|date:"Y년 m월 d일" }} 시음노트</h2>
+    
+    <div class="notes-list">
+        {% if notes %}
+            {% for note in notes %}
+            <div class="note-card">
+                <div class="note-header">
+                    <h3>{{ note.wine_name }}</h3>
+                    {% if note.winery %}
+                    <span class="winery">({{ note.winery }})</span>
+                    {% endif %}
+                </div>
+                
+                <div class="note-details">
+                    <span class="wine-type">{{ note.get_wine_type_display }}</span>
+                    <span class="rating">
+                        {% with ''|center:note.rating as range %}
+                        {% for _ in range %}★{% endfor %}
+                        {% endwith %}
+                    </span>
+                </div>
+                
+                <div class="note-actions">
+                    <a href="{% url 'notes:note_detail' note.id %}" class="btn btn-view">상세보기</a>
+                    <a href="{% url 'notes:note_edit' note.id %}" class="btn btn-edit">수정</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-notes">이 날짜에 작성된 시음노트가 없습니다.</p>
+        {% endif %}
+    </div>
+    
+    <div class="page-actions">
+        <button onclick="showCreateNoteModal('{{ target_date|date:'Y-m-d' }}')" class="btn btn-primary">
+            새 시음노트 작성
+        </button>
+        <a href="{% url 'notes:home_default' %}" class="btn btn-secondary">달력으로 돌아가기</a>
+    </div>
+</div>
+{% endblock %}

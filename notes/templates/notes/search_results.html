@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>검색 결과</h1>
+     {% if query %}
+       <h3>검색어 : {{ query }}</h3>
+    {% endif %}
+
+    {% if page_obj %}
+        {% for note in page_obj %}
+        <div class="note-card">
+                <h2><a href="{% url 'notes:note_detail' note.id %}">{{ note.wine_name }}</a></h2>
+                <p><b>테이스팅 날짜:</b> {{ note.tasting_date }}</p>
+                <p><b>와인 종류:</b> {{ note.get_wine_type_display }}</p>
+                <p><b>와이너리:</b> {{ note.winery }}</p>
+                <p><b>국가:</b> {{ note.get_country_display }}</p>
+                {% if note.image %}
+                <img src="{{ note.image.url }}" alt="와인 이미지" style="max-width: 100px; max-height:100px;">
+                {% endif %}
+
+                <a href="{% url 'notes:note_edit' note.id %}" class="button small">수정</a>
+                <form method="post" action="{% url 'notes:note_delete' note.id %}" style="display: inline-block;">
+                    {% csrf_token %}
+                    <button type="submit" class="button small delete-button">삭제</button>
+                </form>
+            </div>
+        {% endfor %}
+        <!-- 페이지네이션 -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">« first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">last »</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>검색 결과가 없습니다.</p>
+    {% endif %}
+  {% endblock %}

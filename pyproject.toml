@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "mywine"
+version = "0.1.0"
+description = ""
+authors = ["grace287 <chenlucia287@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.4"
+pillow = "^11.1.0"
+django-taggit = "^6.1.0"
+crispy-bootstrap4 = "^2024.10"
+python-decouple = "^3.8"
+django-crispy-forms = "^2.3"
+django-tempus-dominus = "^5.1.2.17"
+social-auth-app-django = "^5.4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

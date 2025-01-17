@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <title>와인 시음 노트</title>
+        {% block base_style %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        {% endblock %}
+        
+        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+        <link href='{% static "css/calendar.css" %}' rel='stylesheet' />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js'></script>
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+        <!-- Select2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        
+        <!-- Select2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    </head>
+<body>
+    <nav>
+       <div class="container">
+           <a href="{% url 'notes:home_default' %}">홈</a>
+           <!-- <a href="{% url 'gallery:gallery_view' %}">갤러리</a> -->
+           <a href="{% url 'notes:collection' %}">모아보기</a>
+           <a href="{% url 'community:post_list' %}">커뮤니티</a>
+           <a href="{% url 'dashboard:statistics' %}">통계</a>
+           <form action="{% url 'notes:search_notes' %}" method="get">
+               <input type="text" name="q" placeholder="검색...">
+               <button type="submit" class="button small">검색</button>
+           </form>
+
+           <!-- <form action="{% url 'notes:filter_notes' %}" method="get">
+                <select name="wine_type">
+                     <option value="">와인 종류</option>
+                    {% for key, value in notes.models.TastingNote.WINE_TYPES %}
+                     <option value="{{ key }}">{{ value }}</option>
+                     {% endfor %}
+                </select>
+                 <select name="country">
+                     <option value="">국가</option>
+                     {% for key, value in notes.models.TastingNote.WINE_PRODUCING_COUNTRIES %}
+                     <option value="{{ key }}">{{ value }}</option>
+                     {% endfor %}
+                 </select>
+              <button type="submit" class="button small">필터</button>
+           </form> -->
+           {% if user.is_authenticated %}
+                <a href="{% url 'users:profile' %}">내 정보</a>
+               <form method="post" action="{% url 'users:logout' %}">
+                {% csrf_token %}
+                <button type="submit">로그아웃</button>
+                </form>
+            {% else %}
+                <a href="{% url 'users:signup' %}">회원가입</a>
+                <a href="{% url 'users:login' %}">로그인</a>
+            {% endif %}
+       </div>
+    </nav>
+    <div class="container">
+    {% block content %}
+    {% include 'notes/calendar.html' %}
+    {% endblock %}
+    </div>
+</body>
+</html>

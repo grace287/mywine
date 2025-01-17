@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/calendar.css' %}?v=1">
+<script src="{% static 'js/note_detail.js' %}"></script>
+{% endblock %}
+
+  {% block content %}
+      <h1>{{ note.wine_name }}</h1>
+      <h1>{{ note.winery }}</h1>
+      <hr>
+      {% if note.image %}
+          <img src="{{ note.image.url }}" alt="와인 이미지" style="max-width: 300px; display:block;">
+      {% endif %}
+      <p><b>와인 종류:</b> {{ note.get_wine_type_display }}</p>
+      <p><b>와인 품종:</b> {{ note.wine_varietal }}</p>
+      <p><b>와이너리:</b> {{ note.winery }}</p>
+      <p><b>국가:</b> {{ note.get_country_display }}</p>
+      <p><b>빈티지:</b> {{ note.vintage }}</p>
+      <p><b>테이스팅 날짜:</b> {{ note.tasting_date }}</p>
+      <p><b>테이스팅 장소:</b> {{ note.tasting_place }}</p>
+      <p><b>투명도:</b> {{ note.appearance_clarity }}</p>
+      <p><b>색의 강도:</b> {{ note.appearance_intensity }}</p>
+      <p><b>향의 강도:</b> {{ note.aroma_intensity }}</p>
+      <p><b>아로마 노트:</b> {{ note.aroma_notes }}</p>
+      <p><b>당도:</b> {{ note.sweetness }}</p>
+      <p><b>산도:</b> {{ note.acidity }}</p>
+      <p><b>탄닌:</b> {{ note.tannin }}</p>
+      <p><b>바디:</b> {{ note.body }}</p>
+      <p><b>종합 평가:</b> {{ note.overall }}</p>
+
+      <a href="{% url 'notes:note_edit' note.id %}" class="button">수정</a>
+      <form method="post" action="{% url 'notes:note_delete' note.id %}" style="display: inline-block;">
+          {% csrf_token %}
+          <button type="submit" class="button delete-button">삭제</button>
+      </form>
+  {% endblock %}

@@ -1,0 +1,823 @@
+{% load static %}
+
+{% block extra_head %}
+<!-- Font Awesome과 SweetAlert2 추가 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- <link rel="stylesheet" href="{% static 'css/create_note.css' %}"> -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- Select2 CSS, JS 추가 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/nouislider@14.6.3/distribute/nouislider.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/nouislider@14.6.3/distribute/nouislider.min.js"></script>
+
+<link rel="stylesheet" href="{% static 'css/create_note.css' %}?v=1.1">
+<script src="{% static 'js/create_note.js' %}?v=1.1"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="note-form-container">
+    <div class="tastingNoteForm" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            <h2 class="banner">시음노트 작성</h2>
+        </div>
+        <div class="steps">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">기본 정보</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">외관 평가</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">아로마</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">맛</div>
+            </div>
+            <div class="step" data-step="5">
+                <div class="step-number">5</div>
+                <div class="step-label">종합평가</div>
+            </div>
+        </div>
+    
+        <form id="tastingNoteForm" method="post" action="{% url 'notes:note_create' %}">
+            {% csrf_token %}
+            
+            <!-- 스텝 1: 기본 정보 -->
+            <div class="step-content active" id="step1">
+                <section class="form-section">
+                    <div class="grid-form">
+                        <h2>기본 와인 정보</h2>
+                        <div class="grid-form-sub">
+                            <div class="form-group">
+                                <label for="wine_name">와인 이름 *</label>
+                                <input type="text" id="wine_name" name="wine_name" required placeholder="와인 이름을 입력하세요">
+                            </div>
+                            <!-- 와인 종류 -->
+                            <div class="form-group">
+                                <label for="wine_type">와인 종류</label>
+                                <div class="wine-type-options">
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_red" name="wine_type" value="red" checked>
+                                        <label for="wine_type_red">🍷 레드 와인</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_white" name="wine_type" value="white">
+                                        <label for="wine_type_white">🥂 화이트 와인</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_sparkling" name="wine_type" value="sparkling">
+                                        <label for="wine_type_sparkling">✨스파클링</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_rose" name="wine_type" value="rose">
+                                        <label for="wine_type_rose">🌸로제</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_champagne" name="wine_type" value="champagne">
+                                        <label for="wine_type_champagne">🍾샴페인</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_dessert" name="wine_type" value="dessert">
+                                        <label for="wine_type_dessert">🍯디저트 와인</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_fortified" name="wine_type" value="fortified">
+                                        <label for="wine_type_fortified">🌟주정강화 와인</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_orange" name="wine_type" value="orange">
+                                        <label for="wine_type_orange">🟠오렌지와인</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_natural" name="wine_type" value="natural">
+                                        <label for="wine_type_natural">🌿내추럴 와인</label>
+                                    </div>
+                                    <div class="wine-radio-group">
+                                        <input type="radio" id="wine_type_other" name="wine_type" value="other">
+                                        <label for="wine_type_other">🍇기타</label>
+                                    </div>
+                                </div>
+                                <!-- <div class="wine-type-grid">
+                                    {% for value, label in wine_types %}
+                                    <div class="wine-type-option">
+                                        <input type="radio" id="wine_type_{{ value }}" name="wine_type" value="{{ value }}" {% if forloop.first %}checked{% endif %}>
+                                        <label for="wine_type_{{ value }}" class="wine-type-label {{ value }}">
+                                            <span class="wine-icon">
+                                                {% if value == 'red' %}🍷
+                                                {% elif value == 'white' %}🥂
+                                                {% elif value == 'sparkling' %}✨
+                                                {% elif value == 'rose' %}🌸
+                                                {% elif value == 'champagne' %}🍾
+                                                {% elif value == 'dessert' %}🍯
+                                                {% elif value == 'fortified' %}🌟
+                                                {% elif value == 'orange' %}🟠
+                                                {% elif value == 'natural' %}🌿
+                                                {% else %}🍇
+                                                {% endif %}
+                                            </span>
+                                            <span class="wine-type-name">{{ label }}</span>
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div> -->
+                            </div>
+                            <div class="form-group">
+                                <label for="vintage">빈티지</label>
+                                <input type="number" id="vintage" name="vintage" min="1900" max="2030" placeholder="빈티지를 입력하세요">
+                            </div>
+                            
+                            <div class="form-group country-selection">
+                                <label for="country">생산국</label>
+                                <div class="country-search-wrapper">
+                                    <input type="text" 
+                                           id="country_search" 
+                                           class="country-search-input" 
+                                           placeholder="생산지를 입력하세요"
+                                           autocomplete="off">
+                                    <input type="hidden" id="country" name="country" value="">
+                                </div>
+                                <div id="country_suggestions" class="country-suggestions"></div>
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="winery">와이너리</label>
+                                <input type="text" id="winery" name="winery">
+                            </div>
+                
+                            <!-- 포도 품종 태그 입력 -->
+                            <div class="form-group grape-varieties">
+                                <label for="grape_input">포도 품종</label>
+                                <!-- 기본 포도 품종 선택 -->
+                                <select id="grape_variety_select" class="form-select">
+                                    <option value="">포도 품종을 선택하거나 추가하세요</option>
+                                    <option value="Cabernet Sauvignon">카베르네 소비뇽</option>
+                                    <option value="Merlot">메를로</option>
+                                    <option value="Syrah">시라/쉬라즈</option>
+                                    <option value="Pinot Noir">피노 누아</option>
+                                    <option value="Chardonnay">샤르도네</option>
+                                    <option value="Sauvignon Blanc">소비뇽 블랑</option>
+                                    <option value="Riesling">리슬링</option>
+                                </select>
+                                <!-- 커스텀 포도 품종 입력 -->
+                                <div class="grape-input-wrapper">
+                                    <input type="text" id="grape_variety_input" class="form-input" 
+                                        placeholder="품종을 직접 입력하세요">
+                                    <button type="button" id="add_grape_btn" class="add-grape-btn">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+    
+                                <!-- 선택된 포도 품종 태그들 -->
+                                <div id="grape_tags" class="grape-tags"></div>
+                                
+                                <!-- 실제 폼 제출용 hidden input -->
+                                <input type="hidden" id="grape_varieties" name="grape_varieties" value="">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+        
+                <!-- 테이스팅 정보 섹션 -->
+                <section class="form-section">
+                    <div class="grid-form">
+                        <h2>테이스팅 정보</h2>
+                    <div class="grid-form-sub">
+                        <div class="form-group">
+                            <label for="tasting_date">테이스팅 날짜 *</label>
+                            <input type="date" id="tasting_date" name="tasting_date" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="tasting_place">테이스팅 장소</label>
+                            <input type="text" id="tasting_place" name="tasting_place">
+                        </div>
+                        <div class="form-group">
+                            <label for="tasting_with">함께한 사람</label>
+                            <input type="text" id="tasting_with" name="tasting_with">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">가격</label>
+                            <input type="number" id="price" name="price">
+                        </div>
+                        <div class="form-group">
+                            <label for="price_place">구입처</label>
+                            <input type="text" id="price_place" name="price_place">
+                        </div>
+                    </div>
+                </section>
+            </div>
+    
+            <!-- 스텝 2: 외관 -->
+            <div class="step-content" id="step2">
+                <section class="form-section">
+                    <h2>외관 평가</h2>
+                    <div class="appearance-grid">
+                        <!-- 색의 강도 슬라이더 -->
+                        <div class="slider-group">
+                            <label for="appearance_intensity">색의 강도</label>
+                            <div id="intensity-slider" class="slider"></div>
+                            <input type="hidden" name="appearance_intensity" id="appearance_intensity">
+                            <div class="slider-labels">
+                                <span>매우 연함</span>
+                                <span>연함</span>
+                                <span>보통</span>
+                                <span>진함</span>
+                                <span>매우 진함</span>
+                            </div>
+                        </div>
+
+                        <!-- 투명도 슬라이더 -->
+                        <div class="slider-group">
+                            <label for="appearance_clarity">투명도</label>
+                            <div id="clarity-slider" class="slider"></div>
+                            <input type="hidden" name="appearance_clarity" id="appearance_clarity">
+                            <div class="slider-labels">
+                                <span>탁함</span>
+                                <span>흐림</span>
+                                <span>맑음</span>
+                            </div>
+                        </div>
+        
+                        <div class="color-selection">
+                            <label>와인 색상 (다중 선택 가능)</label>
+                            <div class="wine-colors-grid">
+                <!-- 레드 와인 색상 -->
+                <div class="color-category">
+                    <h4>레드 와인</h4>
+                    <div class="color-options">
+                        <div class="color-option">
+                            <input type="checkbox" id="color_purple" name="appearance_color" value="purple">
+                            <label for="color_purple" style="background-color: #4a0080;" title="Purple"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_ruby" name="appearance_color" value="ruby">
+                            <label for="color_ruby" style="background-color: #9b111e;" title="Ruby"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_garnet" name="appearance_color" value="garnet">
+                            <label for="color_garnet" style="background-color: #733635;" title="Garnet"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_tawny" name="appearance_color" value="tawny">
+                            <label for="color_tawny" style="background-color: #8b4513;" title="Tawny"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_brown" name="appearance_color" value="brown">
+                            <label for="color_brown" style="background-color: #654321;" title="Brown"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_deep_red" name="appearance_color" value="deep_red">
+                            <label for="color_deep_red" style="background-color: #800000;" title="Deep Red"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 화이트 와인 색상 -->
+                <div class="color-category">
+                    <h4>화이트 와인</h4>
+                    <div class="color-options">
+                        <div class="color-option">
+                            <input type="checkbox" id="color_lemon" name="appearance_color" value="lemon">
+                            <label for="color_lemon" style="background-color: #fff44f;" title="Lemon"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_gold" name="appearance_color" value="gold">
+                            <label for="color_gold" style="background-color: #ffd700;" title="Gold"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_green" name="appearance_color" value="green">
+                            <label for="color_green" style="background-color: #98fb98;" title="Green"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_yellow" name="appearance_color" value="yellow">
+                            <label for="color_yellow" style="background-color: #ffeb3b;" title="Yellow"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 로제 와인 색상 -->
+                <div class="color-category">
+                    <h4>로제 와인</h4>
+                    <div class="color-options">
+                        <div class="color-option">
+                            <input type="checkbox" id="color_pink" name="appearance_color" value="pink">
+                            <label for="color_pink" style="background-color: #ffb6c1;" title="Pink"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_apricot" name="appearance_color" value="apricot">
+                            <label for="color_apricot" style="background-color: #ffb347;" title="Apricot"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_strawberry" name="appearance_color" value="strawberry">
+                            <label for="color_strawberry" style="background-color: #fc5a8d;" title="Strawberry"></label>
+                        </div>
+                        <div class="color-option">
+                            <input type="checkbox" id="color_coral" name="appearance_color" value="coral">
+                            <label for="color_coral" style="background-color: #ff7f50;" title="Coral"></label>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+    
+            <!-- 스텝 3: 아로마 -->
+            <div class="step-content" id="step3">
+                <section class="form-section">
+                    <h2>아로마</h2>
+                    <!-- 아로마 강도 슬라이더 -->
+                    <div class="slider-group aroma-intensity">
+                        <label>아로마 강도</label>
+                        <div id="aroma-intensity-slider" class="slider"></div>
+                        <input type="hidden" name="aroma_intensity" id="aroma_intensity" value="3">
+                        <div class="slider-labels">
+                            <span>매우 약함</span>
+                            <span>약함</span>
+                            <span>보통</span>
+                            <span>강함</span>
+                            <span>매우 강함</span>
+                        </div>
+                    </div>
+
+                    <!-- 아로마 선택 -->
+                    <div class="aroma-categories">
+                        <!-- 과일향 -->
+                        <div class="aroma-category">
+                            <h3>🍎 과일향</h3>
+                            <div class="aroma-grid">
+                                <div class="aroma-item" data-category="fruit">
+                                    <input type="checkbox" id="aroma_apple" name="aroma_notes" value="apple">
+                                    <label for="aroma_apple">
+                                        <span class="aroma-icon">🍎</span>
+                                        <span class="aroma-name">사과</span>
+                                    </label>
+                                </div>
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_pear" name="aroma_notes" value="pear">
+                                    <label for="aroma_pear">
+                                        <span class="aroma-icon">🍐</span>
+                                        <span class="aroma-name">배</span>
+                                    </label>
+                                </div>
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_peach" name="aroma_notes" value="peach">
+                                    <label for="aroma_peach">
+                                        <span class="aroma-icon">🍑</span>
+                                        <span class="aroma-name">복숭아</span>
+                                    </label>
+                                </div>
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_plum" name="aroma_notes" value="plum">
+                                    <label for="aroma_plum">
+                                        <span class="aroma-icon">🍇</span>
+                                        <span class="aroma-name">자두</span>
+                                    </label>
+                                </div>
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_cherry" name="aroma_notes" value="cherry">
+                                    <label for="aroma_cherry">
+                                        <span class="aroma-icon">🍒</span>
+                                        <span class="aroma-name">체리</span>
+                                    </label>
+                                </div>
+                                <!-- 열대과일 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_tropical_fruit" name="aroma_notes" value="tropical_fruit">
+                                    <label for="aroma_tropical_fruit">
+                                        <span class="aroma-icon">🍍</span>
+                                        <span class="aroma-name">열대과일</span>
+                                    </label>
+                                </div>
+                                <!-- 블랙베리 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_blackberry" name="aroma_notes" value="blackberry">
+                                    <label for="aroma_blackberry">
+                                        <span class="aroma-icon">🍇</span>
+                                        <span class="aroma-name">블랙베리</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 향신료 -->
+                        <div class="aroma-category">
+                            <h3>🌿 향신료</h3>
+                            <div class="aroma-grid">
+                                <div class="aroma-item" data-category="spice">
+                                    <input type="checkbox" id="aroma_vanilla" name="aroma_notes" value="vanilla">
+                                    <label for="aroma_vanilla">
+                                        <span class="aroma-icon">🍶</span>
+                                        <span class="aroma-name">바닐라</span>
+                                    </label>
+                                </div>
+                                <!-- 시나몬 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_cinnamon" name="aroma_notes" value="cinnamon">
+                                    <label for="aroma_cinnamon">
+                                        <span class="aroma-icon">🍶</span>
+                                        <span class="aroma-name">시나몬</span>
+                                    </label>
+                                </div>
+                                <!-- 후추 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_pepper" name="aroma_notes" value="pepper">
+                                    <label for="aroma_pepper">
+                                        <span class="aroma-icon">🍶</span>
+                                        <span class="aroma-name">후추</span>
+                                    </label>
+                                </div>
+                                <!-- 생강 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_ginger" name="aroma_notes" value="ginger">
+                                    <label for="aroma_ginger">
+                                        <span class="aroma-icon">🍶</span>
+                                        <span class="aroma-name">생강</span>
+                                    </label>
+                                </div>
+                                <!-- 샤프란 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_saffron" name="aroma_notes" value="saffron">
+                                    <label for="aroma_saffron">
+                                        <span class="aroma-icon">🍶</span>
+                                        <span class="aroma-name">샤프란</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 꽃향 -->
+                        <div class="aroma-category">
+                            <h3>🌸 플로럴</h3>
+                            <div class="aroma-grid">
+                                <div class="aroma-item" data-category="floral">
+                                    <input type="checkbox" id="aroma_rose" name="aroma_notes" value="rose">
+                                    <label for="aroma_rose">
+                                        <span class="aroma-icon">🌹</span>
+                                        <span class="aroma-name">장미</span>
+                                    </label>
+                                </div>
+                                <!-- 라일락 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_lilac" name="aroma_notes" value="lilac">
+                                    <label for="aroma_lilac">
+                                        <span class="aroma-icon">🌸</span>
+                                        <span class="aroma-name">라일락</span>
+                                    </label>
+                                </div>
+                                <!-- 라벤더 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_lavender" name="aroma_notes" value="lavender">
+                                    <label for="aroma_lavender">
+                                        <span class="aroma-icon">🌸</span>
+                                        <span class="aroma-name">라벤더</span>
+                                    </label>
+                                </div>
+                                <!-- 데이지 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_daisy" name="aroma_notes" value="daisy">
+                                    <label for="aroma_daisy">
+                                        <span class="aroma-icon">🌸</span>
+                                        <span class="aroma-name">데이지</span>
+                                    </label>
+                                </div>
+                                <!-- 제비꽃 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_poppy" name="aroma_notes" value="poppy">
+                                    <label for="aroma_poppy">
+                                        <span class="aroma-icon">🌸</span>
+                                        <span class="aroma-name">제비꽃</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 나무향 -->
+                        <div class="aroma-category">
+                            <h3>🌳 나무향</h3>
+                            <div class="aroma-grid">
+                                <div class="aroma-item" data-category="wood">
+                                    <input type="checkbox" id="aroma_oak" name="aroma_notes" value="oak">
+                                    <label for="aroma_oak">
+                                        <span class="aroma-icon">🌳</span>
+                                        <span class="aroma-name">오크</span>
+                                    </label>
+                                </div>
+                                <!-- 샌달우드 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_sandalwood" name="aroma_notes" value="sandalwood">
+                                    <label for="aroma_sandalwood">
+                                        <span class="aroma-icon">🌳</span>
+                                        <span class="aroma-name">샌달우드</span>
+                                    </label>
+                                </div>
+                                <!-- 유칼립투스 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_eucalyptus" name="aroma_notes" value="eucalyptus">
+                                    <label for="aroma_eucalyptus">
+                                        <span class="aroma-icon">🌳</span>
+                                        <span class="aroma-name">유칼립투스</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 견과류 -->
+                        <div class="aroma-category">
+                            <h3>🥜 견과류</h3>
+                            <div class="aroma-grid">
+                                <div class="aroma-item" data-category="nuts">
+                                    <input type="checkbox" id="aroma_almond" name="aroma_notes" value="almond">
+                                    <label for="aroma_almond">
+                                        <span class="aroma-icon">🥜</span>
+                                        <span class="aroma-name">아몬드</span>
+                                    </label>
+                                </div>
+                                <!-- 땅콩 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_peanut" name="aroma_notes" value="peanut">
+                                    <label for="aroma_peanut">
+                                        <span class="aroma-icon">🥜</span>
+                                        <span class="aroma-name">땅콩</span>
+                                    </label>
+                                </div>
+                                <!-- 호두 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_walnut" name="aroma_notes" value="walnut">
+                                    <label for="aroma_walnut">
+                                        <span class="aroma-icon">🥜</span>
+                                        <span class="aroma-name">호두</span>
+                                    </label>
+                                </div>
+                                <!-- 헤이즐넛 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_hazelnut" name="aroma_notes" value="hazelnut">
+                                    <label for="aroma_hazelnut">
+                                        <span class="aroma-icon">🥜</span>
+                                        <span class="aroma-name">헤이즐넛</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 기타 -->
+                        <div class="aroma-category">
+                            <h3>🌿 기타</h3>
+                            <div class="aroma-grid">
+                                <!-- 가죽 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_leather" name="aroma_notes" value="leather">
+                                    <label for="aroma_leather">
+                                        <span class="aroma-icon">🌿</span>
+                                        <span class="aroma-name">가죽</span>
+                                    </label>
+                                </div>
+
+                                <!-- 담배 -->
+                                <div class="aroma-item">
+                                    <input type="checkbox" id="aroma_cigarette" name="aroma_notes" value="cigarette">
+                                    <label for="aroma_cigarette">
+                                        <span class="aroma-icon">🌿</span>
+                                        <span class="aroma-name">담배</span>
+                                    </label>
+                                </div>
+
+                                <!-- 흙냄새  -->
+                                <div class="aroma-item" data-category="other">
+                                    <input type="checkbox" id="aroma_other" name="aroma_notes" value="other">
+                                    <label for="aroma_other">
+                                        <span class="aroma-icon">🌿</span>
+                                        <span class="aroma-name">흙냄새</span>
+                                    </label>
+                                </div>
+
+                                <!-- 버터 -->
+                                <div class="aroma-item" data-category="other">
+                                    <input type="checkbox" id="aroma_butter" name="aroma_notes" value="butter">
+                                    <label for="aroma_butter">
+                                        <span class="aroma-icon">🌿</span>
+                                        <span class="aroma-name">버터</span>
+                                    </label>
+                                </div>
+
+                                <!-- 기타 -->
+                                <div class="aroma-item" data-category="other">
+                                    <input type="checkbox" id="aroma_other" name="aroma_notes" value="other">
+                                    <label for="aroma_other">
+                                        <span class="aroma-icon">🌿</span>
+                                        <span class="aroma-name">기타</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- 선택된 아로마 노트 표시 -->
+                    <div class="selected-notes">
+                        <h4>선택된 아로마 노트</h4>
+                        <div id="selected-aroma-tags" class="aroma-tags"></div>
+                        <input type="hidden" name="aroma_notes_final" id="aroma_notes_final">
+                    </div>
+
+                    <!-- 아로마 섹션 내 추가 노트 부분 -->
+                    <div class="additional-notes">
+                        <h4>추가 아로마 노트</h4>
+                        <div class="custom-aroma-input">
+                            <input type="text" 
+                                id="custom_aroma_input" 
+                                placeholder="추가 아로마 노트를 입력하고 Enter를 눌러주세요"
+                                class="custom-input">
+                            <div id="custom-aroma-tags" class="custom-tags"></div>
+                            <input type="hidden" name="custom_aroma_notes" id="custom_aroma_notes">
+                        </div>
+                    </div>
+                </section>
+            </div>
+    
+            <!-- 스텝 4: 맛 -->
+            <div class="step-content" id="step4">
+                <section class="form-section taste-section">
+                    <h2>맛 평가</h2>
+                    <!-- 맛 평가 슬라이더 -->
+                    <div class="taste-evaluation">
+                        <!-- 당도 슬라이더 -->
+                        <div class="taste-slider-row">
+                            <div class="taste-label">당도</div>
+                            <div class="taste-slider-container">
+                                <span class="taste-min">Dry</span>
+                                <div class="taste-slider-wrapper">
+                                    <div id="sweetness-slider" class="taste-slider"></div>
+                                    <div class="taste-value"><span id="sweetness-value">2</span>/5</div>
+                                </div>
+                                <span class="taste-max">Sweet</span>
+                            </div>
+                        </div>
+
+                        <!-- 산도 슬라이더 -->
+                        <div class="taste-slider-row">
+                            <div class="taste-label">산도</div>
+                            <div class="taste-slider-container">
+                                <span class="taste-min">Low</span>
+                                <div class="taste-slider-wrapper">
+                                    <div id="acidity-slider" class="taste-slider"></div>
+                                    <div class="taste-value"><span id="acidity-value">4</span>/5</div>
+                                </div>
+                                <span class="taste-max">High</span>
+                            </div>
+                        </div>
+
+                        <!-- 바디감 슬라이더 -->
+                        <div class="taste-slider-row">
+                            <div class="taste-label">바디감</div>
+                            <div class="taste-slider-container">
+                                <span class="taste-min">Light</span>
+                                <div class="taste-slider-wrapper">
+                                    <div id="body-slider" class="taste-slider"></div>
+                                    <div class="taste-value"><span id="body-value">5</span>/5</div>
+                                </div>
+                                <span class="taste-max">Full</span>
+                            </div>
+                        </div>
+
+                        <!-- 타닌 슬라이더 -->
+                        <div class="taste-slider-row">
+                            <div class="taste-label">타닌</div>
+                            <div class="taste-slider-container">
+                                <span class="taste-min">Smooth</span>
+                                <div class="taste-slider-wrapper">
+                                    <div id="tannin-slider" class="taste-slider"></div>
+                                    <div class="taste-value"><span id="tannin-value">4</span>/5</div>
+                                </div>
+                                <span class="taste-max">Firm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 맛 추가 노트 -->
+                    <div class="taste-notes">
+                        <h4>맛 추가 노트</h4>
+                        <div class="taste-notes-input">
+                            <input type="text" 
+                                id="taste_note_input" 
+                                placeholder="맛 노트를 입력하고 Enter를 눌러주세요"
+                                class="custom-input">
+                            <div id="taste-note-tags" class="taste-tags"></div>
+                            <input type="hidden" name="taste_notes" id="taste_notes_hidden">
+                        </div>
+                    </div>
+                </section>
+            </div>
+    
+            <!-- 스텝 5: 종합평가 -->
+            <div class="step-content" id="step5">
+                <section class="form-section">
+                    <h2>종합 평가</h2>
+                    <!-- 별점 평가 -->
+                    <div class="rating-container">
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5">★</label>
+                            <input type="radio" id="star4" name="rating" value="4" checked>
+                            <label for="star4">★</label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3">★</label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2">★</label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1">★</label>
+                        </div>
+                        <div class="rating-value"><span id="rating-display">4.0</span>/5.0</div>
+                    </div>
+
+                    <!-- 시음 노트 -->
+                    <div class="tasting-notes">
+                        <label for="tasting_note">시음 노트</label>
+                        <textarea id="tasting_note" name="tasting_note" 
+                                placeholder="와인에 대한 전반적인 인상과 특징을 기록하세요..."
+                                rows="4"></textarea>
+                    </div>
+
+                    <!-- 음식 페어링 추천 -->
+                    <div class="food-pairing">
+                        <h4>음식 페어링 추천</h4>
+                        <div class="food-tags-container">
+                            <div class="preset-tags">
+                                <button type="button" class="food-tag" data-value="스테이크">스테이크</button>
+                                <button type="button" class="food-tag" data-value="치즈">치즈</button>
+                                <button type="button" class="food-tag" data-value="파스타">파스타</button>
+                                <button type="button" class="food-tag" data-value="해산물">해산물</button>
+                                <button type="button" class="food-tag" data-value="샐러드">샐러드</button>
+                                <button type="button" class="food-tag" data-value="디저트">디저트</button>
+                                <button type="button" class="food-tag" data-value="치킨">치킨</button>
+                                <button type="button" class="food-tag" data-value="바비큐">바비큐</button>
+                            </div>
+                            <div class="custom-food-input">
+                                <input type="text" id="food_pairing_input" 
+                                    placeholder="직접 입력 (Enter로 추가)">
+                            </div>
+                            <div id="selected-food-tags" class="selected-tags"></div>
+                            <input type="hidden" name="food_pairings" id="food_pairings_hidden">
+                        </div>
+                    </div>
+
+                    <!-- 이미지 업로드 -->
+                    <div class="image-upload">
+                        <h4>이미지 업로드</h4>
+                        <div class="image-upload-container">
+                            <label for="image_upload" class="upload-button">
+                                <i class="fas fa-plus"></i>
+                                이미지 추가
+                            </label>
+                            <input type="file" id="image_upload" multiple accept="image/*" style="display: none;">
+                            <div id="image-preview-container" class="image-previews"></div>
+                            <input type="hidden" name="uploaded_images" id="uploaded_images_hidden">
+                        </div>
+                    </div>
+        
+                    <div class="form-group">
+                        <h4 class="overall">종합 평가</h4>
+                        <!-- <label for="overall">종합 평가</label> -->
+                        <textarea id="overall" name="overall" rows="4"></textarea>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="is_public">공개 여부</label>
+                        <input type="checkbox" id="is_public" name="is_public">
+                    </div>
+                </section>
+            </div>
+    
+            <div class="form-navigation">
+                <div class="nav-buttons">
+                    <button type="button" class="btn-prev" style="display: none;">
+                        <i class="fas fa-arrow-left"></i> 이전
+                    </button>
+                    <button type="button" class="btn-next">
+                        다음 <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                <form method="post" action="{% url 'notes:note_create' %}" id="noteForm">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </form>
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i> 저장
+                </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+
+
+{% endblock %}

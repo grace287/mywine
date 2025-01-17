@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="post-form-container">
+    <div class="form-header">
+        <h1>{% if is_edit %}게시글 수정{% else %}새 게시글 작성{% endif %}</h1>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+        
+        <!-- 게시글 유형 선택 -->
+        <div class="form-group">
+            <label for="id_post_type">게시글 유형</label>
+            <select name="post_type" id="id_post_type" class="form-control" onchange="toggleAdditionalFields()">
+                <option value="discussion">자유토론</option>
+                <option value="review">시음 후기</option>
+                <option value="event">이벤트/모임</option>
+            </select>
+        </div>
+
+        <!-- 기본 필드 -->
+        <div class="form-group">
+            <label for="id_title">제목</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+            <div class="error-message">{{ form.title.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- 시음 노트 선택 (시음 후기일 때만 표시) -->
+        <div id="tasting-note-section" class="form-group" style="display: none;">
+            <label for="id_tasting_note">시음 노트 선택</label>
+            <select name="tasting_note" id="id_tasting_note" class="form-control">
+                <option value="">시음 노트를 선택하세요</option>
+                {% for note in user_notes %}
+                <option value="{{ note.id }}" data-wine="{{ note.wine_name }}" 
+                        data-rating="{{ note.rating }}" data-content="{{ note.overall }}">
+                    {{ note.wine_name }} ({{ note.created_at|date:"Y.m.d" }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- 이벤트 추가 필드 -->
+        <div id="event-fields" class="form-group" style="display: none;">
+            <div class="form-group">
+                <label for="id_event_date">일시</label>
+                <input type="datetime-local" name="event_date" id="id_event_date" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="id_location">장소</label>
+                <input type="text" name="location" id="id_location" class="form-control" placeholder="모임 장소를 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="id_max_participants">최대 참가 인원</label>
+                <input type="number" name="max_participants" id="id_max_participants" class="form-control" min="0" placeholder="0 = 제한없음">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_content">내용</label>
+            {{ form.content }}
+            {% if form.content.errors %}
+            <div class="error-message">{{ form.content.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- 태그 입력 -->
+        <div class="form-group">
+            <label for="id_tags">태그</label>
+            <input type="text" name="tags" id="id_tags" class="form-control" 
+                   placeholder="쉼표로 구분하여 입력 (예: 와인,모임,테이스팅)">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">
+                {% if is_edit %}수정하기{% else %}작성하기{% endif %}
+            </button>
+            <a href="{% url 'community:post_list' %}" class="btn-cancel">취소</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.post-form-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-header h1 {
+    font-size: 2em;
+    color: #2d3436;
+}
+
+.post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2d3436;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    border-color: #6c5ce7;
+    outline: none;
+}
+
+textarea.form-control {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-submit, .btn-cancel {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-submit {
+    background: #6c5ce7;
+    color: white;
+    border: none;
+}
+
+.btn-cancel {
+    background: #e9ecef;
+    color: #2d3436;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-submit:hover, .btn-cancel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 태그 스타일 */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.tag {
+    background: #f1f3f5;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    color: #2d3436;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .post-form-container {
+        margin: 20px;
+        padding: 20px;
+    }
+}
+</style>
+
+<script>
+function toggleAdditionalFields() {
+    const postType = document.getElementById('id_post_type').value;
+    const tastingNoteSection = document.getElementById('tasting-note-section');
+    const eventFields = document.getElementById('event-fields');
+    
+    // 모든 추가 필드 숨기기
+    tastingNoteSection.style.display = 'none';
+    eventFields.style.display = 'none';
+    
+    // 선택된 유형에 따라 필드 표시
+    if (postType === 'review') {
+        tastingNoteSection.style.display = 'block';
+    } else if (postType === 'event') {
+        eventFields.style.display = 'block';
+    }
+}
+
+// 시음 노트 선택 시 내용 자동 채우기
+document.getElementById('id_tasting_note').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    if (selectedOption.value) {
+        const wineName = selectedOption.dataset.wine;
+        const rating = selectedOption.dataset.rating;
+        const content = selectedOption.dataset.content;
+        
+        document.getElementById('id_title').value = `${wineName} 시음 후기`;
+        document.getElementById('id_content').value = 
+            `와인: ${wineName}\n평점: ${rating}/5\n\n${content}`;
+    }
+});
+
+// 페이지 로드 시 초기 필드 상태 설정
+document.addEventListener('DOMContentLoaded', toggleAdditionalFields);
+</script>
+{% endblock %} 

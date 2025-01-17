@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+    <div class="gallery-container">
+        <!-- 상단 탭 메뉴 -->
+        <div class="view-tabs">
+            <button class="tab-button {% if current_view == 'gallery' %}active{% endif %}" data-view="gallery">
+                <i class="fas fa-th"></i> 갤러리
+            </button>
+            <button class="tab-button {% if current_view == 'album' %}active{% endif %}" data-view="album">
+                <i class="fas fa-book-open"></i> 앨범
+            </button>
+        </div>
+    
+        <!-- 갤러리 뷰 -->
+        <div class="view-content {% if current_view == 'gallery' %}active{% endif %}" id="gallery-view">
+            <div class="gallery-grid">
+                {% for note in page_obj %}
+            <div class="gallery-item">
+                <a href="{% url 'notes:note_detail' note.id %}" class="item-link">
+                    {% if note.image %}
+                        <img src="{{ note.image.url }}" alt="{{ note.wine_name }}" class="item-image">
+                    {% else %}
+                        <div class="no-image-box">
+                            <div class="wine-info">
+                                <h3>{{ note.wine_name }}</h3>
+                                <p class="wine-type">{{ note.get_wine_type_display }}</p>
+                                <div class="wine-meta">
+                                    <span class="wine-date">{{ note.tasting_date|date:"Y.m.d" }}</span>
+                                    <span class="wine-rating">
+                                        {% with ''|center:note.rating as range %}
+                                        {% for _ in range %}★{% endfor %}
+                                        {% endwith %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="item-info">
+                        <h3>{{ note.wine_name }}</h3>
+                        <p class="item-date">{{ note.tasting_date|date:"Y.m.d" }}</p>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+    
+        <!-- 앨범 뷰 -->
+        <div class="view-content {% if current_view == 'album' %}active{% endif %}" id="album-view">
+            <div class="album-grid">
+                {% for note in page_obj %}
+                <div class="album-card">
+                    <div class="album-image">
+                        {% if note.image %}
+                            <img src="{{ note.image.url }}" alt="{{ note.wine_name }}">
+                        {% else %}
+                            <div class="no-image">
+                                <i class="fas fa-wine-bottle"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="album-info">
+                        <h3>{{ note.wine_name }}</h3>
+                        <div class="album-meta">
+                            <span><i class="far fa-calendar"></i> {{ note.tasting_date|date:"Y.m.d" }}</span>
+                            <span><i class="fas fa-star"></i> {{ note.rating }}점</span>
+                        </div>
+                        <p class="album-description">{{ note.description|truncatewords:30 }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    
+        <!-- 페이지네이션 -->
+        {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="page-link first">처음</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link">이전</a>
+        {% endif %}
+            
+            <span class="current-page">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&view={{ current_view }}" class="page-link">다음</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&view={{ current_view }}" class="page-link last">마지막</a>
+            {% endif %}
+            {% else %}
+        <div class="no-notes">
+            <p>아직 작성된 시음노트가 없습니다.</p>
+        </div>
+    {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const view = button.dataset.view;
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.set('view', view);
+                    window.location.href = currentUrl.toString();
+                });
+            });
+        });
+        </script>
+{% endblock %}
+
+
+
+
+

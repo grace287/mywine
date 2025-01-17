@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="community-container">
+    <!-- 상단 배너 -->
+    <div class="community-banner">
+        <h1>Wine Community</h1>
+        <p>와인과 같이하는 경험을 공유하세요</p>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="community-content">
+        <!-- 좌측 사이드바 -->
+        <aside class="community-sidebar">
+            <div class="sidebar-section">
+                <h3>게시판 메뉴</h3>
+                <ul class="board-menu">
+                    <li class="{% if not post_type %}active{% endif %}">
+                        <a href="{% url 'community:post_list' %}">
+                            <i class="fas fa-list"></i> 전체 게시글
+                        </a>
+                    </li>
+                    <li class="{% if post_type == 'review' %}active{% endif %}">
+                        <a href="{% url 'community:post_list' %}?type=review">
+                            <i class="fas fa-wine-glass-alt"></i> 시음 후기
+                        </a>
+                    </li>
+                    <li class="{% if post_type == 'event' %}active{% endif %}">
+                        <a href="{% url 'community:post_list' %}?type=event">
+                            <i class="fas fa-calendar-alt"></i> 이벤트/모임
+                        </a>
+                    </li>
+                    <li class="{% if post_type == 'discussion' %}active{% endif %}">
+                        <a href="{% url 'community:post_list' %}?type=discussion">
+                            <i class="fas fa-comments"></i> 자유토론
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>인기 태그</h3>
+                <div class="tag-cloud">
+                    {% for tag in popular_tags %}
+                    <a href="?tag={{ tag.name }}" class="tag">
+                        #{{ tag.name }} <span>({{ tag.count }})</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </aside>
+
+        <!-- 메인 게시글 영역 -->
+        <main class="post-main">
+            <!-- 검색 및 정렬 -->
+            <div class="post-controls">
+                <form class="search-form" method="get">
+                    <input type="text" name="q" value="{{ search_query }}" 
+                           placeholder="검색어를 입력하세요" class="search-input">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+
+                <div class="post-actions">
+                    <select name="sort" class="sort-select" onchange="this.form.submit()">
+                        <option value="recent">최신순</option>
+                        <option value="popular">인기순</option>
+                        <option value="views">조회순</option>
+                    </select>
+                    <a href="{% url 'community:post_create' %}" class="write-button">
+                        <i class="fas fa-pen"></i> 글쓰기
+                    </a>
+                </div>
+            </div>
+
+            <!-- 게시글 목록 -->
+            <div class="post-list">
+                {% for post in posts %}
+                <article class="post-card">
+                    <div class="post-card-header">
+                        <span class="post-type-badge {{ post.post_type }}">
+                            {{ post.get_post_type_display }}
+                        </span>
+                        <h2 class="post-title">
+                            <a href="{% url 'community:post_detail' post.id %}">
+                                {{ post.title }}
+                            </a>
+                        </h2>
+                    </div>
+
+                    <div class="post-preview">
+                        {{ post.content|truncatewords:30 }}
+                    </div>
+
+                    <div class="post-meta">
+                        <div class="post-info">
+                            <span class="author">
+                                <i class="fas fa-user"></i> {{ post.user.username }}
+                            </span>
+                            <span class="date">
+                                <i class="far fa-clock"></i> {{ post.created_at|date:"Y.m.d" }}
+                            </span>
+                        </div>
+                        <div class="post-stats">
+                            <span class="likes">
+                                <i class="fas fa-heart"></i> {{ post.likes.count }}
+                            </span>
+                            <span class="comments">
+                                <i class="fas fa-comment"></i> {{ post.comments.count }}
+                            </span>
+                            <span class="views">
+                                <i class="fas fa-eye"></i> {{ post.views }}
+                            </span>
+                        </div>
+                    </div>
+
+                    {% if post.tasting_note %}
+                    <div class="wine-preview">
+                        <i class="fas fa-wine-bottle"></i>
+                        {{ post.tasting_note.wine_name }}
+                        <span class="rating">
+                            {% for i in ""|ljust:post.tasting_note.rating %}★{% endfor %}
+                        </span>
+                    </div>
+                    {% endif %}
+                </article>
+                {% empty %}
+                <div class="no-posts">
+                    <i class="far fa-frown"></i>
+                    <p>게시글이 없습니다.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- 페이지네이션 -->
+            {% if posts.has_other_pages %}
+            <div class="pagination">
+                {% if posts.has_previous %}
+                <a href="?page={{ posts.previous_page_number }}" class="page-link">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                {% endif %}
+
+                {% for num in posts.paginator.page_range %}
+                {% if posts.number == num %}
+                <span class="page-link active">{{ num }}</span>
+                {% else %}
+                <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}" class="page-link">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</div>
+
+<style>
+/* 커뮤니티 컨테이너 */
+.community-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 배너 */
+.community-banner {
+    background: linear-gradient(to right, #6c5ce7, #a8a5e6);
+    color: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.community-banner h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+/* 메인 컨텐츠 레이아웃 */
+.community-content {
+    display: flex;
+    gap: 30px;
+}
+
+/* 사이드바 */
+.community-sidebar {
+    flex: 0 0 250px;
+}
+
+.sidebar-section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.board-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.board-menu li {
+    margin-bottom: 10px;
+}
+
+.board-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    color: #2d3436;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.board-menu a:hover {
+    background: #f5f6fa;
+}
+
+.board-menu .active a {
+    background: #6c5ce7;
+    color: white;
+}
+
+/* 게시글 카드 */
+.post-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.post-card:hover {
+    transform: translateY(-3px);
+}
+
+.post-type-badge {
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.post-type-badge.review { background: #ffeaa7; }
+.post-type-badge.event { background: #a8e6cf; }
+.post-type-badge.discussion { background: #ff7675; }
+
+/* 검색 및 정렬 */
+.post-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .community-content {
+        flex-direction: column;
+    }
+    
+    .community-sidebar {
+        flex: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .community-banner {
+        padding: 20px;
+    }
+    
+    .community-banner h1 {
+        font-size: 2em;
+    }
+    
+    .post-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,817 @@
+{% extends 'base.html' %}
+{% load static %}  {# 상단에 추가 #}
+{% load crispy_forms_tags %}  {# crispy forms를 사용하는 경우 #}
+
+{% block extra_head %}
+<!-- FullCalendar CSS -->
+<link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css' rel='stylesheet' />
+<link href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.css' rel='stylesheet' />
+<!-- FullCalendar JS -->
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/main.min.js'></script>
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'css/calendar.css' %}?v=1.1">
+
+<script src="{% static 'js/calendar.js' %}"></script>
+<script src="{% static 'js/note_detail.js' %}"></script>
+<style>
+    td a:after{
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="calendar-header">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1>안녕하세요, {{ user.username }}님</h1>
+            <p>오늘도 새로운 와인을 발견해보세요</p>
+        </div>
+        <button id="add-note-btn" class="add-note-button">
+            시음노트 작성
+        </button>
+    </div>
+    
+</div>
+<div class="calendar-container">
+    
+
+    <h1>내 시음노트</h1>
+    <span class="total-count">총 {{ recent_notes|length }}개의 노트</span>
+
+    <div id='calendar'></div>
+    <!-- 선택된 날짜의 노트 섹션 -->
+    <div id="selected-date-notes" class="notes-preview-section">
+        <h3 class="date-title"></h3>
+        <div class="notes-cards-container"></div>
+    </div>
+
+    <!-- 가이드 섹션 추가 -->
+    <div class="guide-section notes-preview-section">
+        <div class="guide-content">
+            <h2>나만의 테스팅 노트를 기록하세요</h2>
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <div class="step-icon">📝</div>
+                    <h3>시음노트 작성</h3>
+                    <p>마신 와인의 특징과 느낌을 기록하세요</p>
+                </div>
+                <div class="guide-step">
+                    <div class="step-icon">🔍</div>
+                    <h3>와인 분석</h3>
+                    <p>와인의 맛과 향을 체계적으로 분석하세요</p>
+                </div>
+                <div class="guide-step">
+                    <div class="step-icon">📊</div>
+                    <h3>취향 발견</h3>
+                    <p>나만의 와인 취향을 발견하세요</p>
+                </div>
+            </div>
+            <!-- <a href="{% url 'notes:note_create' %}" class="create-note-btn">
+                <i class="fas fa-plus"></i> 새 시음노트 작성하기
+            </a> -->
+        </div>
+    </div>
+
+    <!-- 최근 시음노트 예시 섹션 -->
+    <div class="recent-notes">
+        <h2>최근 시음노트 예시</h2>
+        <div class="example-note-card">
+            <div class="note-header">
+                <h3>시음노트 작성 예시</h3>
+                <span class="wine-type red">레드 와인</span>
+            </div>
+            <div class="note-content">
+                <div class="wine-info">
+                    <div class="info-row">
+                        <span class="label">와인명</span>
+                        <span class="value">샤또 마고 2018</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">생산국가</span>
+                        <span class="value">프랑스</span>
+                    </div>
+                </div>
+                
+                <div class="taste-profile">
+                    <h4>맛 프로필</h4>
+                    <div class="taste-bars">
+                        <div class="taste-bar">
+                            <span>당도</span>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <div class="taste-bar">
+                            <span>산도</span>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="taste-bar">
+                            <span>바디</span>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="taste-bar">
+                            <span>타닌</span>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note-details">
+                    <p class="note-text">진한 루비색을 띄며, 블랙베리와 카시스의 아로마가 느껴집니다. 
+                    입안에서는 풍부한 타닌과 함께 긴 여운이 특징적입니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 최근 노트 섹션 -->
+    <!-- <div id="latest-notes" class="notes-preview-section">
+        <h3 class="date-title">최근 시음노트</h3>
+        <div class="notes-cards-container"></div>
+    </div> -->
+</div>
+
+
+<!-- note_counts 데이터를 JavaScript로 전달 -->
+<script id="note-counts-data" type="application/json">
+    {{ note_counts|safe }}
+</script>
+
+
+
+<!-- 시음노트 작성 모달 -->
+<div id="note-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div id="create-note-form">
+            <form method="post" action="{% url 'notes:note_create' %}" id="noteForm">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <!-- {% include 'notes/create_note.html' %} -->
+                <!-- <button type="submit" class="button">저장</button> -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 시음노트 상세 보기 모달 -->
+<div id="note-detail-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="document.getElementById('note-detail-modal').style.display='none'">&times;</span>
+        <div class="modal-body">
+            <!-- 노트 상세 내용은 JavaScript에서 동적으로 채워집니다 -->
+            {% include 'notes/note_detail_modal.html' %}
+        </div>
+    </div>
+</div>
+
+<!-- 시음노트 목록 모달 -->
+<div id="notes-list-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 class="modal-title">시음노트 목록</h2>
+        <div id="notes-list-content"></div>
+        <button id="add-note-from-list" class="button primary-button">새 노트 작성</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const closeButtons = document.querySelectorAll('.close-button');
+    const noteDetailModal = document.getElementById('note-detail-modal');
+
+    // 모달 닫기 버튼 이벤트 리스너
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            this.closest('.modal').style.display = 'none';
+        });
+    });
+
+    // 노트 상세보기 함수
+    window.showNoteDetail = function(noteId) {
+        fetch(`/notes/api/note/${noteId}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('노트를 불러오는 데 실패했습니다.');
+                }
+                return response.json();
+            })
+            .then(note => {
+            // 노트 정보를 모달에 채우기
+            // 모달 표시
+            const modal = document.getElementById('note-detail-modal');
+            modal.style.display = 'block';
+            // const modal = document.getElementById('note-detail-modal');
+            // const modalBody = modal.querySelector('.modal-body');
+            // modalBody.innerHTML = `
+            //     <h2>${note.wine_name}</h2>
+            //     <p><strong>와이너리:</strong> ${note.winery}</p>
+            //     <p><strong>빈티지:</strong> ${note.vintage}</p>
+            //     <p><strong>와인 종류:</strong> ${note.wine_type}</p>
+            //     <p><strong>시음 날짜:</strong> ${note.tasting_date}</p>
+            //     <p><strong>전체 평가:</strong> ${note.overall}</p>
+            //     <p><strong>당도:</strong> ${note.sweetness}</p>
+            //     <p><strong>산도:</strong> ${note.acidity}</p>
+            //     <p><strong>탄닌:</strong> ${note.tannin}</p>
+            //     <p><strong>바디:</strong> ${note.body}</p>
+            // `;
+            modal.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('노트를 불러오는 데 오류가 발생했습니다.');
+        });
+    };
+
+    // 노트 작성 폼 제출 처리
+    const noteForm = document.getElementById('noteForm');
+    if (noteForm) {
+        noteForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // 기본 제출 방지
+            const formData = new FormData(noteForm);
+
+            fetch(noteForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.errors || '노트 저장에 실패했습니다.');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message);
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url; // 리다이렉트
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message);
+            });
+        });
+    }
+});
+</script>
+<script>
+    document.getElementById('noteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNoteDetail(data.note_id);
+                createModal.style.display = "none";
+                calendar.refetchEvents();  // 달력 이벤트 새로고침
+            // 노트 상세 페이지로 이동
+            window.location.href = `/notes/note/${data.note_id}/`;
+        } else {
+            alert('노트 저장에 실패했습니다.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('오류가 발생했습니다.');
+    });
+});
+    document.addEventListener('DOMContentLoaded', function() {
+        // note_counts 데이터를 JavaScript 객체로 변환
+        const noteCounts = JSON.parse('{{ note_counts|escapejs }}');
+        // console.log('Note counts:', noteCounts);  // 디버깅용
+
+        // 페이지 로드시 가장 최근 날짜의 노트 표시
+        const latestDate = Object.keys(noteCounts).sort().reverse()[0];
+        if (latestDate) {
+            showSelectedDateNotes(latestDate, 'latest-notes');
+        }
+
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ko',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth'
+            },
+            events: function(info, successCallback, failureCallback) {
+                const noteCounts = {{ note_counts|safe }};
+                const events = [];
+                
+                for (let date in noteCounts) {
+                    events.push({
+                        title: `${noteCounts[date]}개`,
+                        start: date,
+                        display: 'background',
+                        backgroundColor: '#6c5ce7'
+                    });
+            }
+            
+            successCallback(events);
+        },
+            dayCellDidMount: function(arg) {
+            const dateStr = arg.date.toISOString().split('T')[0];
+            const count = noteCounts[dateStr] || 0;
+            
+            if (count > 0) {
+                const countElement = document.createElement('div');
+                countElement.className = 'note-count';
+                countElement.textContent = count;
+                arg.el.querySelector('.fc-daygrid-day-top').appendChild(countElement);
+            }
+        },
+            dayCellContent: function(arg) {
+                const dateStr = arg.date.toISOString().split('T')[0];
+                const count = window.noteCounts?.[dateStr] || 0;
+                
+                return {
+                    html: `
+                        <div class="date-content">
+                            <span class="date-number">${arg.dayNumberText}</span>
+                            ${count > 0 ? `<span class="note-count">${count}</span>` : ''}
+                        </div>
+                    `
+                };
+            },
+            dateClick: function(info) {
+            const dateStr = info.dateStr;
+            const count = noteCounts[dateStr] || 0;
+
+            console.log('Date clicked:', dateStr);
+            console.log('Note count:', count);  
+
+            if (noteCounts[dateStr]) {
+                showSelectedDateNotes(dateStr, 'selected-date-notes');
+            }
+            
+            if (count > 0) {
+                // 해당 날짜의 노트 목록을 모달로 표시
+                showNotesListModal(dateStr);
+            } else {
+                // 새 노트 작성 모달 표시
+                showNoteModal(dateStr);
+            }
+        }
+        });
+        
+        calendar.render();
+        
+        // 모달 제어
+        const modal = document.getElementById('note-modal');
+        const closeBtn = document.querySelector('.close-button');
+        const addNoteBtn = document.getElementById('add-note-btn');
+        const createModal = document.getElementById('note-modal');
+        const listModal = document.getElementById('notes-list-modal');
+        const closeButtons = document.querySelectorAll('.close-button');
+        const addNoteFromListBtn = document.getElementById('add-note-from-list');
+        const detailModal = document.getElementById('note-detail-modal');
+
+
+        // 모달 열기
+        addNoteBtn.onclick = function() {
+            const today = new Date().toISOString().split('T')[0];
+            showNoteModal(today);
+        }
+
+        // 모달 닫기
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // 모달 닫기 버튼들
+    closeButtons.forEach(button => {
+        button.onclick = function() {
+            createModal.style.display = "none";
+            listModal.style.display = "none";
+            detailModal.style.display = "none";
+        }
+    });
+
+    // 새 노트 작성 버튼
+    addNoteBtn.onclick = function() {
+        const today = new Date().toISOString().split('T')[0];
+        showNoteModal(today);
+    }
+
+    // 목록에서 새 노트 작성 버튼
+    addNoteFromListBtn.onclick = function() {
+        listModal.style.display = "none";
+        const dateStr = listModal.getAttribute('data-date');
+        showNoteModal(dateStr);
+    }
+
+    // 모달 외부 클릭 시 닫기
+    window.onclick = function(event) {
+        if (event.target == createModal || event.target == listModal) {
+            createModal.style.display = "none";
+            listModal.style.display = "none";
+            detailModal.style.display = "none";
+        }
+    }
+
+    // 날짜 클릭 이벤트 수정
+calendar.setOption('dateClick', function(info) {
+    const dateStr = info.dateStr;
+    const count = noteCounts[dateStr] || 0;
+    
+    if (count > 0) {
+        showSelectedDateNotes(dateStr);
+    } else {
+        showNoteModal(dateStr);
+    }
+});
+
+// 선택한 날짜의 노트 표시 함수
+function showSelectedDateNotes(dateStr) {
+    const container = document.querySelector('.notes-cards-container');
+    const dateTitle = document.querySelector('.date-title');
+    dateTitle.textContent = `${dateStr} 시음노트`;
+    
+    fetch(`/notes/api/notes/${dateStr}/`)
+        .then(response => response.json())
+        .then(notes => {
+            const notesHtml = notes.map(note => `
+                <div class="note-card">
+                    <div class="note-card-header">
+                        <h4>${note.wine_name}</h4>
+                        <span class="wine-badge ${note.wine_type.toLowerCase()}">${note.wine_type_display}</span>
+                    </div>
+                    <div class="note-card-body">
+                        <div class="rating-stars">
+                            ${'★'.repeat(note.rating)}${'☆'.repeat(5-note.rating)}
+                            <span class="rating-text">${note.rating}/5</span>
+                        </div>
+                        <div class="taste-metrics">
+                            <div class="metric">
+                                <span>당도</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: ${note.sweetness * 20}%"></div>
+                                </div>
+                            </div>
+                            <div class="metric">
+                                <span>산도</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: ${note.acidity * 20}%"></div>
+                                </div>
+                            </div>
+                            <div class="metric">
+                                <span>탄닌</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: ${note.tannin * 20}%"></div>
+                                </div>
+                            </div>
+                            <div class="metric">
+                                <span>바디</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: ${note.body * 20}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="detail-btn show-note-detail" onclick="showNoteDetail(${note.id})">노트 상세보기</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = notesHtml;
+            document.getElementById('selected-date-notes').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            container.innerHTML = '<p class="error-message">노트를 불러오는 중 오류가 발생했습니다.</p>';
+        });
+}
+
+    // 새 노트 작성 모달 표시
+    function showNoteModal(date) {
+        const modal = document.getElementById('note-modal');
+        const dateInput = modal.querySelector('input[name="tasting_date"]');
+        if (dateInput) {
+            dateInput.value = date;
+        }
+        modal.style.display = "block";
+    }
+
+    function showNoteDetail(noteId) {
+        const detailModal = document.getElementById('note-detail-modal');
+        const contentDiv = document.getElementById('note-detail-content');
+        
+        fetch(`/notes/api/note/${noteId}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('노트를 불러오는데 실패했습니다.');
+                }
+                return response.json();
+            })
+            .then(note => {
+                contentDiv.innerHTML = `
+                    <div class="note-detail">
+                        <div class="note-header">
+                            <h2>${note.wine_name}</h2>
+                            <div class="note-meta">
+                                <span class="wine-type">${note.wine_type_display}</span>
+                                <span class="rating">${'★'.repeat(note.rating)}</span>
+                            </div>
+                        </div>
+
+                        <div class="note-content">
+                            <div class="wine-info-section">
+                                <h3>와인 정보</h3>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <label>와이너리</label>
+                                        <span>${note.winery}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>빈티지</label>
+                                        <span>${note.vintage}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tasting-profile">
+                                <h3>테이스팅 프로필</h3>
+                                <div class="taste-grid">
+                                    <div class="taste-item">
+                                        <label>당도</label>
+                                        <div class="taste-bar">
+                                            <div class="taste-level" style="width: ${note.sweetness * 20}%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="taste-item">
+                                        <label>산도</label>
+                                        <div class="taste-bar">
+                                            <div class="taste-level" style="width: ${note.acidity * 20}%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="taste-item">
+                                        <label>탄닌</label>
+                                        <div class="taste-bar">
+                                            <div class="taste-level" style="width: ${note.tannin * 20}%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="taste-item">
+                                        <label>바디</label>
+                                        <div class="taste-bar">
+                                            <div class="taste-level" style="width: ${note.body * 20}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tasting-notes">
+                                <h3>테이스팅 노트</h3>
+                                <div class="notes-grid">
+                                    <div class="note-item">
+                                        <label>외관</label>
+                                        <p>${note.appearance_clarity} / ${note.appearance_intensity}</p>
+                                    </div>
+                                    <div class="note-item">
+                                        <label>아로마</label>
+                                        <p>${note.aroma_intensity} / ${note.aroma_notes}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="overall-note">
+                                <h3>종합 평가</h3>
+                                <p>${note.overall}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                detailModal.style.display = "block";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                contentDiv.innerHTML = '<p class="error-message">노트를 불러오는 중 오류가 발생했습니다.</p>';
+            });
+    }
+
+    function deleteNote(noteId) {
+        if (confirm('정말 삭제하시겠습니까?')) {
+            fetch(`/notes/${noteId}/delete/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('note-detail-modal').style.display = "none";
+                    calendar.refetchEvents();  // 달력 이벤트 새로고침
+                } else {
+                    alert('삭제에 실패했습니다.');
+                }
+            });
+        }
+    }
+    function showNotesListModal(dateStr) {
+        const modal = document.getElementById('notes-list-modal');
+        const contentDiv = document.getElementById('notes-list-content');
+        
+        // 모달 타이틀 업데이트
+        const modalTitle = modal.querySelector('.modal-title');
+        modalTitle.textContent = `${dateStr} 시음노트`;
+        
+        fetch(`/notes/api/notes/${dateStr}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 응답 데이터 로깅
+                console.log('API Response:', data);
+                
+                // 데이터가 비어있는 경우 처리
+                if (!Array.isArray(data) || data.length === 0) {
+                    contentDiv.innerHTML = '<p class="no-notes">이 날짜의 시음노트가 없습니다.</p>';
+                    return;
+                }
+
+                // 노트 목록 생성
+                const notesHtml = data.map((note, index) => `
+                    <div class="note-preview ${index === 0 ? 'active' : ''}">
+                        <div class="note-preview-header" onclick="toggleNotePreview(${note.id})">
+                            <div class="note-basic-info">
+                                <h3>${note.wine_name}</h3>
+                                <span class="wine-type">${note.wine_type_display}</span>
+                            </div>
+                            <div class="note-rating">
+                                <span class="stars">${'★'.repeat(note.rating)}</span>
+                                <span class="rating-number">${note.rating}/5</span>
+                                <span class="toggle-icon">${index === 0 ? '▼' : '▶'}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="note-preview-content" id="note-content-${note.id}">
+                            <div class="taste-metrics">
+                                <div class="metric">
+                                    <span class="label">당도</span>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: ${note.sweetness * 20}%"></div>
+                                    </div>
+                                </div>
+                                <div class="metric">
+                                    <span class="label">산도</span>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: ${note.acidity * 20}%"></div>
+                                    </div>
+                                </div>
+                                <div class="metric">
+                                    <span class="label">탄닌</span>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: ${note.tannin * 20}%"></div>
+                                    </div>
+                                </div>
+                                <div class="metric">
+                                    <span class="label">바디</span>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: ${note.body * 20}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="view-detail-btn" onclick="showNoteDetail(${note.id})">
+                                상세보기
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                contentDiv.innerHTML = `
+                    <div class="notes-accordion">
+                        ${notesHtml}
+                    </div>
+                    <button onclick="showNoteModal('${dateStr}')" class="add-note-button">
+                        새 노트 작성
+                    </button>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                contentDiv.innerHTML = '<p class="error-message">노트를 불러오는 중 오류가 발생했습니다.</p>';
+            });
+        
+        modal.style.display = "block";
+    }
+
+    function toggleNotePreview(noteId) {
+        const preview = document.querySelector(`#note-content-${noteId}`).closest('.note-preview');
+        const icon = preview.querySelector('.toggle-icon');
+        const allPreviews = document.querySelectorAll('.note-preview');
+        
+        // 다른 모든 프리뷰를 닫음
+        allPreviews.forEach(p => {
+            if (p !== preview) {
+                p.classList.remove('active');
+                p.querySelector('.toggle-icon').textContent = '▶';
+            }
+        });
+        
+        // 현재 노트의 상태를 토글
+        preview.classList.toggle('active');
+        icon.textContent = preview.classList.contains('active') ? '▼' : '▶';
+    }
+        // 노트 목록 모달 표시
+    // function showNotesListModal(date) {
+    //     const modal = document.getElementById('notes-list-modal');
+    //     const contentDiv = document.getElementById('notes-list-content');
+    //     modal.setAttribute('data-date', date);
+        
+    //     // AJAX로 해당 날짜의 노트 목록 가져오기
+    //     fetch(`/notes/by-date/${date}/`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             let html = `<h3>${date} 시음노트</h3>`;
+    //             data.notes.forEach(note => {
+    //                 html += `
+    //                     <div class="note-card">
+    //                         <div class="note-wine">
+    //                             <strong>${note.wine_name}</strong>
+    //                             ${note.winery ? `<span class="note-winery">(${note.winery})</span>` : ''}
+    //                         </div>
+    //                         <div class="note-info">
+    //                             <span class="note-type">${note.wine_type_display}</span>
+    //                             <span class="note-rating">${'★'.repeat(note.rating)}</span>
+    //                         </div>
+    //                         <div class="note-actions">
+    //                             <a href="/notes/note/${note.id}/" class="button">상세보기</a>
+    //                         </div>
+    //                     </div>
+    //                 `;
+    //             });
+    //             contentDiv.innerHTML = html;
+    //         })
+    //         .catch(error => {
+    //             console.error('Error:', error);
+    //             contentDiv.innerHTML = '<p>노트를 불러오는 중 오류가 발생했습니다.</p>';
+    //         });
+    
+    //     modal.style.display = "block";
+    // }
+        
+        function showCreateNoteModal(date) {
+            const dateInput = document.querySelector('input[name="tasting_date"]');
+            if (dateInput) dateInput.value = date;
+            modal.style.display = 'block';
+        }
+        // 모달 표시 함수
+        function showNoteModal(date) {
+            const modal = document.getElementById('note-modal');
+            const dateInput = modal.querySelector('input[name="tasting_date"]');
+            if (dateInput) {
+                dateInput.value = date;
+            }
+            modal.style.display = "block";
+        }
+        function hideModal() {
+            modal.style.display = 'none';
+        }
+        
+        addNoteBtn.addEventListener('click', () => {
+            const today = new Date().toISOString().split('T')[0];
+            showCreateNoteModal(today);
+        });
+        
+        closeBtn.addEventListener('click', hideModal);
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+    });
+</script>
+
+<!-- detail -->
+ <!-- JavaScript -->
+
+
+{% endblock %}

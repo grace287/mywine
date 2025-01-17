@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>시음 노트 삭제 확인</h1>
+    <p>정말로 "{{ note.wine_name }}" 시음 노트를 삭제하시겠습니까?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="button delete-button">삭제</button>
+        <a href="{% url 'notes:note_detail' note.id %}" class="button">취소</a>
+    </form>
+{% endblock %}

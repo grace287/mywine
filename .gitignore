@@ -1,0 +1,53 @@
+import os
+
+def create_gitignore():
+    gitignore_content = """# Python 관련 파일
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 가상 환경
+env/
+venv/
+.venv/
+.Python
+
+# IDE/편집기 설정 파일
+.vscode/
+.idea/
+
+# 로그 파일
+*.log
+*.sqlite3
+
+# 환경 설정 파일
+.env
+*.env
+.env.*
+
+# Static & Media
+/static/
+/media/
+/staticfiles/
+
+# db
+*.sqlite3
+db.sqlite3
+
+# 기타
+.DS_Store
+*.swp
+*.bak
+*.tmp
+"""
+    file_path = '.gitignore'
+    if not os.path.exists(file_path):
+        with open(file_path, 'w') as file:
+            file.write(gitignore_content)
+        print(f"{file_path} 파일이 생성되었습니다.")
+    else:
+        print(f"{file_path} 파일이 이미 존재합니다.")
+
+if __name__ == "__main__":
+    create_gitignore()

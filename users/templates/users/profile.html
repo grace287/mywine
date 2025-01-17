@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<div class="profile-container">
+  <div class="profile-card">
+      <!-- 프로필 헤더 -->
+      <div class="profile-header">
+          <div class="profile-info">
+              <div class="profile-image">
+                  {% if user.profile.profile_image %}
+                      <img src="{{ user.profile.profile_image.url }}" alt="프로필 이미지">
+                  {% else %}
+                      <div class="default-profile">
+                          <i class="fas fa-user"></i>
+                      </div>
+                  {% endif %}
+              </div>
+              <div class="profile-text">
+                  <h1>{{ user.username }}</h1>
+                  <p>와인 애호가</p>
+              </div>
+          </div>
+          <!-- 프로필 수정 버튼 -->
+          <a href="{% url 'users:profile_edit' %}" class="edit-button">
+              프로필 수정
+              <i class="fas fa-edit"></i>
+          </a>
+      </div>
+
+      <!-- 프로필 내용 -->
+      <div class="profile-content">
+          <!-- 기본 정보 -->
+          <div class="info-section">
+              <h2>기본 정보</h2>
+              <div class="info-grid">
+                  <div class="info-item">
+                      <label>이메일</label>
+                      <p>{{ user.email }}</p>
+                  </div>
+                  <div class="info-item">
+                      <label>가입일</label>
+                      <p>{{ user.date_joined|date:"Y년 m월 d일" }}</p>
+                  </div>
+              </div>
+          </div>
+
+          <!-- 추가 정보 -->
+           <div class="info-section">
+            <h2>추가 정보</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label for="프로필">프로필 이미지</label>
+                    {% if user.profile.profile_image %}
+                        <img src="{{ user.profile.profile_image.url }}" alt="프로필 이미지">
+                    {% else %}
+                        <div class="default-profile">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="info-item">
+                    <label>자기소개</label>
+                    <p>{{ user.profile.bio|default:"자기소개가 없습니다." }}</p>
+                </div>
+            </div>
+           </div>
+
+      </div>
+  </div>
+</div>
+{% endblock %}
