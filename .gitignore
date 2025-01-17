@@ -27,7 +27,6 @@ venv/
 .env.*
 
 # Static & Media
-/static/
 /media/
 
 # db
