@@ -247,32 +247,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# 개발 환경
-if DEBUG:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-    ]
-    STATIC_ROOT = None  # 개발 환경에서는 STATIC_ROOT 비활성화
 
-# 프로덕션 환경
-else:
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_DIRS = []  # 프로덕션에서는 STATICFILES_DIRS 비활성화
+# settings.py
+STATIC_URL = '/static/'
+STATIC_ROOT = '/home/ec2-user/winenow/mywine/staticfiles/'
 
-# 정적/미디어 파일 URL 설정
-STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/'
-MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/home/ec2-user/winenow/mywine/media/'
+
 
 # 공통 설정
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 배포 환경을 위한 설정 (필요 시)
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
