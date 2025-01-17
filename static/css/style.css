@@ -1,0 +1,169 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+nav {
+  background-color: #4b0082; /* 주색상: 자주색 */
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between; /* 메뉴를 좌우로 분산 */
+  align-items: center;
+}
+
+ nav form {
+  display: flex; /* flex 컨테이너 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+  nav select,
+  nav input,
+  nav button {
+  margin: 0 5px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  }
+
+  nav select {
+      background-color: #fff; /* 배경색을 흰색으로 */
+      color: #333; /* 글자색을 검정색으로 */
+   }
+
+
+nav button {
+   background-color: #6a2884; /* 버튼 배경색 설정 */
+  color: white; /* 글자색을 흰색으로 */
+  cursor: pointer;
+    }
+
+  nav button:hover {
+    background-color: #800080;
+  }
+
+    .button {
+    display: inline-block; /* 버튼을 가로로 배치 */
+  background-color: #6a2884;
+   color: white;
+     padding: 10px 15px;
+     text-decoration: none;
+     border-radius: 5px;
+     margin: 10px 5px 10px 0px;
+    cursor: pointer;
+  }
+
+ .button:hover{
+        background-color: #800080;
+  }
+
+  .button.small {
+    padding: 5px 10px;
+    font-size: 0.9em;
+}
+
+  .button.delete-button {
+  background-color: #d9534f; /* 삭제 버튼 색상 */
+  }
+
+ .button.delete-button:hover{
+     background-color: #c9302c;
+ }
+
+
+h1, h2 {
+  color: #4b0082; /* 제목 색상: 자주색 */
+}
+
+  hr {
+  border: 0;
+    height: 1px;
+      background-color: #ccc;
+  margin: 20px 0;
+}
+
+   .note-card {
+    background-color: white;
+  border: 1px solid #ddd;
+  padding: 15px;
+   margin-bottom: 20px;
+   border-radius: 8px;
+}
+
+.note-card h2 a {
+text-decoration: none;
+    color:#4b0082;
+}
+.note-card h2 a:hover {
+    color:#800080
+}
+
+.no-image {
+ height: 150px;
+  width: 100%;
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination {
+text-align: center;
+margin: 20px 0;
+}
+
+.pagination .step-links a {
+    margin: 0 5px;
+  text-decoration: none;
+  color: #4b0082;
+}
+
+
+/* style.css */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f0f0f0;
+}
+
+/* 날짜에 노트가 있는 경우 스타일 */
+td a {
+  position: relative; /* 숫자 표시를 위한 기준 */
+}
+
+/* 시음 노트 표시 */
+#notes-container {  /* notes-container 스타일 */
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}

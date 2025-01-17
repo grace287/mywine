@@ -1,0 +1,644 @@
+/* 로그인 페이지 배경 */
+.login-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f2ff 0%, #ffffff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* 메인 카드 스타일 */
+.login-card {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 600px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow: hidden;
+}
+
+/* 왼쪽 이미지 섹션 */
+.login-image-section {
+    width: 45%;
+    background: #6B3FA0;
+    padding: 3rem;
+    position: relative;
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 와인 배경 이미지 */
+.wine-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/wine-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+}
+
+/* 로고와 설명 컨테이너 */
+.brand-content {
+    position: relative;
+    z-index: 1;
+}
+
+.brand-logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.brand-description {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.feature-list li::before {
+    content: "✓";
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin-right: 0.75rem;
+}
+
+/* 로그인 폼 섹션 */
+.login-form-section {
+    width: 55%;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 모바일 로고 */
+.mobile-logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.mobile-logo h1 {
+    font-size: 2rem;
+    color: #6B3FA0;
+    font-weight: bold;
+}
+
+.mobile-logo p {
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+/* 폼 스타일 */
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-title {
+    font-size: 1.75rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #6B3FA0;
+    box-shadow: 0 0 0 3px rgba(107, 63, 160, 0.1);
+}
+
+/* 자동 로그인 체크박스 */
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    accent-color: #6B3FA0;
+}
+
+.remember-me label {
+    font-size: 0.875rem;
+    color: #4a5568;
+}
+
+/* 로그인 버튼 */
+.login-button {
+    width: 100%;
+    padding: 0.875rem;
+    background: linear-gradient(135deg, #6B3FA0 0%, #8B5FBF 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.login-button:hover {
+    opacity: 0.9;
+}
+
+/* 추가 링크 */
+.additional-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+}
+
+.additional-links a {
+    color: #6B3FA0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.additional-links a:hover {
+    color: #8B5FBF;
+}
+
+/* Font Awesome 추가 */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+
+/* 소셜 로그인 섹션 */
+.social-login {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 1.5rem 0;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.divider span {
+    position: relative;
+    background: white;
+    padding: 0 0.75rem;
+    color: #718096;
+    font-size: 0.875rem;
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 16px;
+    margin: 8px 0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+    gap: 8px;
+    list-style: none;
+}
+
+.social-button img {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+}
+
+/* Google 버튼 스타일 */
+.social-button.google {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #dadce0;
+}
+
+.social-button.google:hover {
+    background-color: gainsboro;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+}
+.social-button.google:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.social-button.google i {
+    color: #4285f4;
+    margin-left: 5px;
+}
+
+/* 네이버 스타일 */
+.social-button.naver {
+    background-color: #03C75A;
+    color: white;
+}
+
+.social-button.naver:hover {
+    background-color: #02b150;
+    box-shadow: 0 2px 4px rgba(3, 199, 90, 0.2);
+    transform: translateY(-1px);
+}
+
+.social-button.naver:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.social-button.naver i {
+    font-size: 18px;
+    margin-left: 5px;
+}
+/* 구분선 스타일 */
+.divider {
+    position: relative;
+    text-align: center;
+    margin: 24px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background-color: #e2e8f0;
+}
+
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.divider span {
+    background-color: white;
+    padding: 0 12px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* 반응형 디자인 */
+/* 모바일에서 왼쪽 섹션 숨기기 */
+@media (max-width: 576px) {
+    .login-image-section {
+        display: none;
+    }
+
+    .mobile-logo {
+        display: block;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-card {
+        flex-direction: column;
+    }
+
+    .login-image-section {
+        width: 100%;
+        padding: 30px;
+    }
+
+    .login-form-section {
+        width: 100%;
+    }
+
+    .brand-logo {
+        font-size: 2rem;
+    }
+
+    .brand-description {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .social-button {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .social-button i {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-image-section {
+        display: block;
+    }
+
+    .login-form-section {
+        width: 50%;
+    }
+
+    .mobile-logo {
+        display: none;
+    }
+}
+
+/* 에러 메시지 스타일 */
+.error-message {
+    background: #FEE2E2;
+    border: 1px solid #FECACA;
+    color: #DC2626;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.login-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.bg-wine {
+    background-color: #6B3FA0;
+}
+
+.text-wine {
+    color: #6B3FA0;
+}
+
+.hover\:bg-wine-dark:hover {
+    background-color: #5a328c;
+}
+
+.focus\:ring-wine:focus {
+    --tw-ring-color: #6B3FA0;
+}
+
+.border-wine {
+    border-color: #6B3FA0;
+}
+
+/* 로그인 페이지 배경 */
+.login-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f2ff 0%, #ffffff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* 메인 카드 스타일 */
+.login-card {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 600px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow: hidden;
+}
+
+/* 와인 배경 이미지 */
+.wine-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/wine-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+}
+
+/* 로고와 설명 컨테이너 */
+.brand-content {
+    position: relative;
+    z-index: 1;
+}
+
+.brand-logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.brand-description {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.feature-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    margin-right: 0.75rem;
+}
+
+/* 로그인 폼 섹션 */
+.login-form-section {
+    width: 100%;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 모바일 로고 */
+.mobile-logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.mobile-logo h1 {
+    font-size: 2rem;
+    color: #6B3FA0;
+    font-weight: bold;
+}
+
+.mobile-logo p {
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+/* 폼 스타일 */
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-title {
+    font-size: 1.75rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #6B3FA0;
+    box-shadow: 0 0 0 3px rgba(107, 63, 160, 0.1);
+}
+
+/* 자동 로그인 체크박스 */
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    accent-color: #6B3FA0;
+}
+
+.remember-me label {
+    font-size: 0.875rem;
+    color: #4a5568;
+}
+
+/* 로그인 버튼 */
+.login-button {
+    width: 100%;
+    padding: 0.875rem;
+    background: linear-gradient(135deg, #6B3FA0 0%, #8B5FBF 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.login-button:hover {
+    opacity: 0.9;
+}
+
+/* 추가 링크 */
+.additional-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+}
+
+.additional-links a {
+    color: #6B3FA0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.additional-links a:hover {
+    color: #8B5FBF;
+}

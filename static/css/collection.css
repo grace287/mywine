@@ -1,0 +1,222 @@
+.collection-container {
+    display: flex;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 필터 사이드바 */
+.filter-sidebar {
+    flex: 0 0 280px;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.filter-section {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.filter-section:last-child {
+    border-bottom: none;
+}
+
+.filter-section h3 {
+    font-size: 1.1em;
+    color: #2d3436;
+    margin-bottom: 15px;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: #636e72;
+}
+
+.filter-option:hover {
+    color: #6c5ce7;
+}
+
+.rating-options .filter-option {
+    color: #ffd700;
+}
+
+/* 메인 컨텐츠 영역 */
+.collection-main {
+    flex: 1;
+}
+
+/* 상단 통계 */
+.collection-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    color: #636e72;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2d3436;
+}
+
+/* 정렬 옵션 */
+.sort-options {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.sort-select {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9em;
+    color: #2d3436;
+    background: white;
+}
+
+/* 와인 그리드 */
+.wine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.wine-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.wine-card:hover {
+    transform: translateY(-5px);
+}
+
+.wine-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.wine-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wine-info {
+    padding: 15px;
+}
+
+.wine-info h3 {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    color: #2d3436;
+}
+
+.wine-type {
+    color: #6c5ce7;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.wine-country {
+    color: #636e72;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+}
+
+.wine-rating {
+    color: #ffd700;
+    margin-bottom: 8px;
+}
+
+.wine-price {
+    font-weight: bold;
+    color: #2d3436;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.page-link {
+    padding: 8px 15px;
+    border-radius: 8px;
+    background: white;
+    color: #2d3436;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.page-link.active {
+    background: #6c5ce7;
+    color: white;
+}
+
+.page-link:hover:not(.active) {
+    background: #f5f6fa;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .collection-container {
+        flex-direction: column;
+    }
+    
+    .filter-sidebar {
+        position: static;
+        width: 100%;
+    }
+    
+    .collection-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .collection-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .wine-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+} 

@@ -1,0 +1,1730 @@
+/* 스텝 네비게이션 고정 스타일 */
+.steps {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 1rem 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+/* 전체 컨테이너 */
+.create-note-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* 스텝 네비게이션 */
+.steps-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.steps-nav::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e5e7eb;
+    z-index: 1;
+}
+
+.step {
+    position: relative;
+    z-index: 2;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+
+/* 그리드 레이아웃 */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.grid-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* 폼 섹션 */
+.form-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.form-section h2 {
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+    font-size: 1.25rem;
+}
+
+/* 폼 그룹 */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+/* 슬라이더 스타일 */
+.slider-group {
+    margin-bottom: 2rem;
+}
+
+.slider {
+    height: 10px;
+    margin: 1.5rem 0;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* 와인종류 라디오 */
+.wine-type-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.wine-radio-group {
+    position: relative;
+}
+
+.wine-radio-group input[type="radio"] {
+    display: none;
+}
+
+.wine-radio-group input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    margin: 0;
+    cursor: pointer;
+    position: relative;
+}
+
+.wine-radio-group input[type="radio"]:checked {
+    border-color: #6c5ce7;
+}
+
+
+.wine-radio-group input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0.6rem;
+    height: 0.6rem;
+    background-color: #6c5ce7;
+    border-radius: 50%;
+}
+
+.wine-radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 호버 효과 */
+.wine-radio-group label:hover {
+    border-color: #6c5ce7;
+    background: #f8f7ff;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(108, 92, 231, 0.1);
+}
+
+/* 선택된 상태 */
+.wine-radio-group input[type="radio"]:checked + label {
+    background: #6c5ce7;
+    border-color: #6c5ce7;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
+}
+
+/* 클릭 효과 */
+.wine-radio-group label:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .wine-type-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .wine-type-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .wine-radio-group label {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+/* 와인 종류 선택 스타일 */
+.wine-type-option {
+    position: relative;
+}
+
+.wine-type-option input[type="radio"] {
+    display: none;
+}
+
+.wine-type-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 0.5rem;
+    padding : 0.8rem;
+    background-color: #f3f4f6;
+}
+
+.wine-type-label:hover {
+    background: #f3f4f6;
+}
+.wine-type-option input[type="radio"]:checked + .wine-type-label {
+    background: #6c5ce7;
+    color: white;
+    border-color: #6c5ce7;
+}
+
+.wine-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.wine-type-name {
+    font-size: 0.9rem;
+    text-align: center;
+    color: #4b5563;
+}
+
+/* 와인 종류별 스타일 */
+.wine-type-label.red { border-color: #dc2626; }
+.wine-type-label.red:hover { background: #fef2f2; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.red {
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+.wine-type-label.white { border-color: #fbbf24; }
+.wine-type-label.white:hover { background: #fffbeb; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.white {
+    background: #fbbf24;
+    border-color: #fbbf24;
+}
+
+.wine-type-label.sparkling { border-color: #60a5fa; }
+.wine-type-label.sparkling:hover { background: #eff6ff; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.sparkling {
+    background: #60a5fa;
+    border-color: #60a5fa;
+}
+
+.wine-type-label.rose { border-color: #f472b6; }
+.wine-type-label.rose:hover { background: #fdf2f8; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.rose {
+    background: #f472b6;
+    border-color: #f472b6;
+}
+
+.wine-type-label.champagne { border-color: #c084fc; }
+.wine-type-label.champagne:hover { background: #faf5ff; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.champagne {
+    background: #c084fc;
+    border-color: #c084fc;
+}
+
+.wine-type-label.dessert { border-color: #fbbf24; }
+.wine-type-label.dessert:hover { background: #fffbeb; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.dessert {
+    background: #fbbf24;
+    border-color: #fbbf24;
+}
+
+.wine-type-label.fortified { border-color: #8b5cf6; }
+.wine-type-label.fortified:hover { background: #f5f3ff; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.fortified {
+    background: #8b5cf6;
+    border-color: #8b5cf6;
+}
+
+.wine-type-label.orange { border-color: #f97316; }
+.wine-type-label.orange:hover { background: #fff7ed; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.orange {
+    background: #f97316;
+    border-color: #f97316;
+}
+
+.wine-type-label.natural { border-color: #22c55e; }
+.wine-type-label.natural:hover { background: #f0fdf4; }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.natural {
+    background: #22c55e;
+    border-color: #22c55e;
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+    .wine-type-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .wine-type-label {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .wine-type-name {
+        font-size: 0.8rem;
+    }
+}
+
+.grape-variety-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.grape-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.add-grape-btn {
+    padding: 0.5rem;
+    background: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-grape-btn:hover {
+    background: #5f3dc4;
+}
+
+.grape-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2rem;
+}
+
+.grape-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #6c5ce7;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    animation: slideIn 0.2s ease;
+}
+
+.grape-tag button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.1rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.grape-tag button:hover {
+    opacity: 1;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-10px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* 와인 종류별 스타일 */
+.wine-type-option input[type="radio"]:checked + .wine-type-label {
+    border-color: #4f46e5;
+    background-color: #f3f4f6;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 와인 종류별 색상 */
+.wine-type-label.red { border-color: #dc2626; }
+.wine-type-label.white { border-color: #fbbf24; }
+.wine-type-label.sparkling { border-color: #60a5fa; }
+.wine-type-label.rose { border-color: #f472b6; }
+.wine-type-label.champagne { border-color: #f59e0b; }
+.wine-type-label.dessert { border-color: #c084fc; }
+.wine-type-label.fortified { border-color: #7c3aed; }
+.wine-type-label.orange { border-color: #f97316; }
+.wine-type-label.natural { border-color: #34d399; }
+.wine-type-label.other { border-color: #6b7280; }
+
+/* 선택된 와인 종류 스타일 */
+.wine-type-option input[type="radio"]:checked + .wine-type-label.red { background-color: rgba(220, 38, 38, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.white { background-color: rgba(251, 191, 36, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.sparkling { background-color: rgba(96, 165, 250, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.rose { background-color: rgba(244, 114, 182, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.champagne { background-color: rgba(245, 158, 11, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.dessert { background-color: rgba(192, 132, 252, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.fortified { background-color: rgba(124, 58, 237, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.orange { background-color: rgba(249, 115, 22, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.natural { background-color: rgba(52, 211, 153, 0.1); }
+.wine-type-option input[type="radio"]:checked + .wine-type-label.other { background-color: rgba(107, 114, 128, 0.1); }
+
+/* 반응형 조정 */
+@media (max-width: 640px) {
+    .wine-type-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 색상 선택 */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.color-options {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.color-option {
+    position: relative;
+}
+
+.color-option input[type="checkbox"] {
+    display: none;
+}
+
+.color-option label {
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.color-option input[type="checkbox"]:checked + label {
+    border-color: #4f46e5;
+    transform: scale(1.1);
+}
+
+/* 호버 효과 */
+.color-option label:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor;
+}
+
+/* 선택된 상태 */
+.color-option input[type="checkbox"]:checked + label {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor;
+    transform: scale(1.1);
+}
+
+/* 툴팁 스타일 */
+.color-option label::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+/* 툴팁 화살표 */
+.color-option label::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    border: 6px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+/* 호버 시 툴팁 표시 */
+.color-option label:hover::after,
+.color-option label:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.color-category {
+    margin-bottom: 1.5rem;
+}
+
+.color-category h4 {
+    font-size: 1rem;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .color-option label {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+/* 아로마 그리드 */
+.aroma-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.aroma-category {
+    background: #f9fafb;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.aroma-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
+
+/* 맛 평가 그리드 */
+.taste-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+/* 종합 평가 스타일 */
+.overall-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* 별점 평가 스타일 */
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.25rem;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 2rem;
+    color: #e5e7eb;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: #8b5cf6;
+}
+
+.rating-value {
+    font-size: 1.2rem;
+    color: #374151;
+}
+
+/* 시음 노트 스타일 */
+.tasting-notes textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 100px;
+    font-size: 0.95rem;
+}
+
+/* 음식 페어링 스타일 */
+.food-pairing {
+    margin-top: 2rem;
+}
+
+.food-tags-container {
+    margin-top: 1rem;
+}
+
+.preset-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.food-tag {
+    padding: 0.5rem 1rem;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 9999px;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.food-tag:hover {
+    background: #e5e7eb;
+}
+
+.food-tag.selected {
+    background: #8b5cf6;
+    color: white;
+}
+
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.selected-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #8b5cf6;
+    color: white;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
+
+/* 이미지 업로드 스타일 */
+.image-upload {
+    margin-top: 2rem;
+}
+
+.image-upload-container {
+    margin-top: 1rem;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #f3f4f6;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.upload-button:hover {
+    background: #e5e7eb;
+}
+
+.image-previews {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.image-preview {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-image {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 별점 */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    font-size: 2rem;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    cursor: pointer;
+    color: #d1d5db;
+    transition: color 0.2s ease;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: #fbbf24;
+}
+
+/* 버튼 네비게이션 스타일 */
+.form-navigation {
+    position: sticky;
+    bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-prev, .btn-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    color: #374151;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-next {
+    background: #6c5ce7;
+    color: white;
+    border: none;
+}
+
+.btn-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-prev:hover {
+    background: #f3f4f6;
+}
+
+.btn-next:hover {
+    background: #5f3dc4;
+}
+
+.btn-save:hover {
+    background: #059669;
+}
+
+@media (max-width: 640px) {
+    .form-navigation {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-buttons {
+        width: 100%;
+    }
+
+    .btn-prev, .btn-next {
+        flex: 1;
+    }
+
+    .btn-save {
+        width: 100%;
+    }
+}
+
+.btn-prev,
+.btn-next,
+.btn-save {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-prev {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.btn-next {
+    background: #4f46e5;
+    color: white;
+}
+
+.btn-save {
+    background: #059669;
+    color: white;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .taste-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .steps-nav {
+        overflow-x: auto;
+        padding-bottom: 1rem;
+    }
+
+    .step {
+        white-space: nowrap;
+    }
+}
+
+/* 스텝 컨텐츠 */
+.step-content {
+    display: none;
+}
+
+.step-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 입력 필드 스타일 */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #f9fafb;
+    transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #4f46e5;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.tasting-note-form {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 10px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+    background: #4a1c40;
+    color: white;
+}
+
+.step-label {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 폼 스타일 */
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+
+.form-input, 
+.form-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: #4a1c40;
+    box-shadow: 0 0 0 2px rgba(74,28,64,0.1);
+    outline: none;
+}
+
+/* 버튼 스타일 */
+.form-navigation {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn-prev,
+.btn-next,
+.btn-save {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-prev {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.btn-next,
+.btn-save {
+    background: #4a1c40;
+    color: white;
+}
+
+.btn-prev:hover {
+    background: #e0e0e0;
+}
+
+.btn-next:hover,
+.btn-save:hover {
+    background: #3a1530;
+}
+
+/* 와인 색상 선택 */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.color-option {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.color-option.selected {
+    background: rgba(74, 28, 64, 0.1);
+}
+
+.color-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.color-circle.purple { background: #4a1c40; }
+.color-circle.ruby { background: #9b2242; }
+.color-circle.garnet { background: #7b1b1e; }
+.color-circle.tawny { background: #8b4513; }
+
+/* 아로마 섹션 스타일 */
+.aroma-categories {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.aroma-category {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.aroma-category h3 {
+    font-size: 1.1rem;
+    color: #374151;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.aroma-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.aroma-item {
+    position: relative;
+}
+
+.aroma-item input[type="checkbox"] {
+    display: none;
+}
+
+.aroma-item label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: #f3f4f6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.aroma-item label:hover {
+    background: #e5e7eb;
+    transform: translateY(-2px);
+}
+
+.aroma-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.aroma-name {
+    font-size: 0.9rem;
+    color: #4b5563;
+    text-align: center;
+}
+
+.aroma-item input[type="checkbox"]:checked + label {
+    background: #4f46e5;
+    color: white;
+}
+
+.aroma-item input[type="checkbox"]:checked + label .aroma-name {
+    color: white;
+}
+
+/* 선택된 아로마 노트 스타일 */
+.selected-notes {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.aroma-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.aroma-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #4f46e5;
+    color: white;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
+
+.aroma-tag button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.2rem;
+    line-height: 1;
+    opacity: 0.7;
+}
+
+.aroma-tag button:hover {
+    opacity: 1;
+}
+
+/* 아로마 강도 슬라이더 */
+.aroma-intensity .noUi-connect {
+    background: linear-gradient(to right, #fef3c7, #4f46e5);
+}
+
+@media (min-width: 768px) {
+    .aroma-categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .aroma-categories {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 추가 아로마 노트 스타일 */
+.additional-notes {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.additional-notes h4 {
+    color: #374151;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.custom-aroma-input {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.custom-input:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    outline: none;
+}
+
+.custom-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2rem;
+}
+
+.custom-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #e2e8f0;
+    color: #4b5563;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    animation: fadeIn 0.2s ease;
+}
+
+.custom-tag button {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.1rem;
+    line-height: 1;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.custom-tag button:hover {
+    opacity: 1;
+    color: #ef4444;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 맛 평가 섹션 스타일 */
+.taste-slider-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.taste-section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.taste-sliders {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.taste-slider-group {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+.taste-label {
+    width: 80px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.taste-slider-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.taste-slider-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+.taste-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.taste-value {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.slider-container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+}
+
+.slider-start, .slider-end {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.taste-slider {
+    height: 6px;
+    border-radius: 3px;
+}
+
+.taste-value {
+    position: absolute;
+    top: -25px;
+    right: 0;
+    background: #6c5ce7;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.taste-min, .taste-max {
+    font-size: 0.85rem;
+    color: #6b7280;
+    width: 50px;
+}
+
+/* 슬라이더 커스텀 스타일 */
+.taste-slider {
+    height: 6px;
+    border-radius: 3px;
+}
+
+/* 각 특성별 슬라이더 색상 */
+#sweetness-slider .noUi-connect {
+    background: linear-gradient(to right, #c084fc, #8b5cf6);
+}
+
+#acidity-slider .noUi-connect {
+    background: linear-gradient(to right, #34d399, #059669);
+}
+
+#body-slider .noUi-connect {
+    background: #8b5cf6;
+}
+
+#tannin-slider .noUi-connect {
+    background: linear-gradient(to right, #f472b6, #db2777);
+}
+
+.noUi-handle {
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #4f46e5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+    display: none;
+}
+
+/* 맛 노트 스타일 */
+.taste-notes {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.taste-notes h4 {
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+.taste-notes-input {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.taste-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2rem;
+}
+
+.taste-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #4f46e5;
+    color: white;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    animation: slideIn 0.2s ease;
+}
+
+.taste-tag button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.1rem;
+    line-height: 1;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.taste-tag button:hover {
+    opacity: 1;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-10px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@media (min-width: 768px) {
+    .taste-sliders {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 맛 평가 슬라이더 스타일 */
+/* 각 특성별 슬라이더 색상 */
+#sweetness-slider .noUi-connect {
+    background: linear-gradient(to right, #c084fc, #8b5cf6);  /* 보라색 계열 */
+}
+
+#acidity-slider .noUi-connect {
+    background: linear-gradient(to right, #34d399, #059669);  /* 초록색 계열 */
+}
+
+#body-slider .noUi-connect {
+    background: linear-gradient(to right, #f59e0b, #d97706);  /* 주황색 계열 */
+}
+
+#tannin-slider .noUi-connect {
+    background: linear-gradient(to right, #f472b6, #db2777);  /* 분홍색 계열 */
+}
+
+.taste-slider {
+    height: 6px;
+    border-radius: 3px;
+}
+
+.noUi-handle {
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #4f46e5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+    display: none;
+}
+
+.taste-slider-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.taste-label {
+    width: 80px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.taste-slider-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.taste-min, .taste-max {
+    font-size: 0.85rem;
+    color: #6b7280;
+    width: 50px;
+}
+
+.taste-min {
+    text-align: right;
+}
+.taste-evaluation {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.taste-slider-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.taste-slider-row:last-child {
+    margin-bottom: 0;
+}
+
+.taste-label {
+    width: 80px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.taste-slider-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.taste-min, .taste-max {
+    font-size: 0.85rem;
+    color: #6b7280;
+    width: 50px;
+}
+
+.taste-min {
+    text-align: right;
+}
+
+.taste-slider-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+.taste-slider {
+    height: 8px;
+    border-radius: 4px;
+    background: #e5e7eb;
+}
+
+.taste-value {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* 각 특성별 슬라이더 스타일 */
+#sweetness-slider .noUi-connect {
+    background: linear-gradient(to right, #e5e7eb 60%, #8b5cf6);
+}
+
+#acidity-slider .noUi-connect {
+    background: linear-gradient(to right, #e5e7eb 20%, #8b5cf6);
+}
+
+#body-slider .noUi-connect {
+    background: #8b5cf6;
+}
+
+#tannin-slider .noUi-connect {
+    background: linear-gradient(to right, #e5e7eb 20%, #8b5cf6);
+}
+
+/* noUiSlider 커스텀 스타일 */
+.noUi-handle {
+    width: 16px !important;
+    height: 16px !important;
+    right: -8px !important;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #8b5cf6;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+    display: none;
+}
+
+.noUi-target {
+    border: none;
+    background: #e5e7eb;
+    box-shadow: none;
+}
+
+.noUi-connects {
+    border-radius: 4px;
+}
+
+/* 품종 선택 스타일 */
+.grape-varieties {
+    margin-bottom: 1.5rem;
+}
+
+.form-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.grape-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    font-size: 0.95rem;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+}
+
+.add-grape-btn {
+    padding: 0.75rem 1rem;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.add-grape-btn:hover {
+    background-color: #5a4bd1;
+}
+
+
+.grape-tag .remove-tag:hover {
+    opacity: 1;
+    color: #ef4444;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(-5px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* 폼 그룹 스타일 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #374151;
+}
